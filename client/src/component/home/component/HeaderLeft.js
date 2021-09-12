@@ -1,5 +1,6 @@
 import React from "react";
 import "./commonStyle.css";
+import profile from "../../../media/profile.webp";
 
 //material ui components ------------------------------
 
@@ -10,10 +11,19 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
+import { makeStyles } from "@material-ui/core/styles";
 
 //#######################################################
 
+const useStyles = makeStyles((theme) => ({
+    dropdown: {
+        zIndex: "2000",
+    },
+}));
+
+//#######################################################
 const HeaderLeft = () => {
+    const classes = useStyles();
     // material ui states -------------------------------------
 
     const [open, setOpen] = React.useState(false);
@@ -52,7 +62,11 @@ const HeaderLeft = () => {
 
     return (
         <div className="headerContainer">
-            <i className="fas fa-user-circle iconColor avtar"></i>
+            <img
+                src={profile}
+                className="userProfileImageHeader"
+                alt="profile"
+            />
             <div className="leftHeaderRightContainer">
                 <Button>
                     <i className="fas fa-bell iconColor "></i>
@@ -73,6 +87,7 @@ const HeaderLeft = () => {
                     role={undefined}
                     transition
                     disablePortal
+                    className={classes.dropdown}
                 >
                     {({ TransitionProps, placement }) => (
                         <Grow

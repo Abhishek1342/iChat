@@ -1,4 +1,5 @@
 import React from "react";
+import profile from "../../../media/profile.webp";
 //material ui components -----------------------------------------
 
 import PropTypes from "prop-types";
@@ -11,8 +12,8 @@ import {
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+// import Typography from "@material-ui/core/Typography";
+// import Box from "@material-ui/core/Box";
 import SearchUser from "./SearchUser";
 
 //################################################################
@@ -28,11 +29,7 @@ function TabPanel(props) {
             aria-labelledby={`full-width-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box p={3}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
+            {value === index && <div>{children}</div>}
         </div>
     );
 }
@@ -87,7 +84,7 @@ const UserListPannel = () => {
         <div className="usersContainer">
             <ThemeProvider theme={theme}>
                 <div className={classes.root}>
-                    <AppBar position="static" color="se">
+                    <AppBar position="static">
                         <Tabs
                             value={value}
                             onChange={handleChange}
@@ -107,10 +104,71 @@ const UserListPannel = () => {
                         onChangeIndex={handleChangeIndex}
                     >
                         <TabPanel value={value} index={0} dir={theme.direction}>
-                            Item One
+                            <div className="userListContainer">
+                                <div className="userListCard">
+                                    <img
+                                        src={profile}
+                                        className="userProfileImage"
+                                        alt="user profile"
+                                    />
+                                    <span class="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
+                                        <span class="visually-hidden">
+                                            New alerts
+                                        </span>
+                                    </span>
+                                    <div className="userDetailContainer">
+                                        <div className="userNameandMessage">
+                                            <h4 className="usersNameHeading">
+                                                Abhishek kumar
+                                            </h4>
+                                            <p className="userMessageAndTime userMessage text-truncate">
+                                                Message sdfkhkjd fshkfsdf
+                                                hdfsdfkd dsfhbksdfh dsfhksdh
+                                            </p>
+                                        </div>
+                                        <div className="MessageTimeAndCount">
+                                            <p className="userMessageAndTime">
+                                                13:40
+                                            </p>
+                                            <span class="mt-1 badge bg-success">
+                                                99
+                                                <span class="visually-hidden">
+                                                    unread messages
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </TabPanel>
                         <TabPanel value={value} index={1} dir={theme.direction}>
-                            Item Two
+                            <h5 className="peopleAroundYou">
+                                People around you
+                            </h5>
+                            <div className="FriendListContainer">
+                                <div className="userListCard">
+                                    <img
+                                        src={profile}
+                                        className="userProfileImage"
+                                        alt="user profile"
+                                    />
+                                    <div className="userDetailContainer">
+                                        <div className="userNameandMessage">
+                                            <h4 className="usersNameHeading findFriendUsersName">
+                                                Abhishek kumar
+                                            </h4>
+                                        </div>
+                                        <div className="MessageTimeAndCount">
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                            >
+                                                Add Friend
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </TabPanel>
                     </SwipeableViews>
                 </div>

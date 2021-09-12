@@ -1,4 +1,5 @@
 import React from "react";
+import ChatSection from "./component/ChatSection";
 import HeaderLeft from "./component/HeaderLeft";
 import HeaderRight from "./component/HeaderRight";
 import UserListPannel from "./component/UserListPannel";
@@ -18,7 +19,9 @@ const Home = () => {
                 <div className="col-3">
                     <UserListPannel />
                 </div>
-                <div className="col-9"> hi</div>
+                <div className="col-9">
+                    <ChatSection />
+                </div>
             </div>
         </div>
     );

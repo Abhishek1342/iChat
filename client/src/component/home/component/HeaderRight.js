@@ -17,6 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
     dropdown: {
         left: "-30px",
+        zIndex: "2000",
     },
 }));
 
@@ -101,12 +102,16 @@ const HeaderRight = () => {
                                         onKeyDown={handleListKeyDown}
                                     >
                                         <MenuItem onClick={handleClose}>
-                                            <i className="fas fa-user-circle iconColor me-3"></i>
-                                            My account
+                                            Clear Chat
                                         </MenuItem>
                                         <MenuItem onClick={handleClose}>
-                                            <i className="fas fa-sign-out-alt iconColor me-3"></i>
-                                            Logout
+                                            Delete Chat
+                                        </MenuItem>
+                                        <MenuItem onClick={handleClose}>
+                                            Unfriend
+                                        </MenuItem>
+                                        <MenuItem onClick={handleClose}>
+                                            Block
                                         </MenuItem>
                                     </MenuList>
                                 </ClickAwayListener>
