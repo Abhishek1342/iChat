@@ -1,13 +1,46 @@
+:root {
+    --icon: #afafaf;
+    --baseColor: #f9f9f9;
+    --white: #ffffff;
+    --darktext: #797979;
+    --lighttext: #c0c0c0;
+    --blue: #4d80e4;
+    --link: #46b3e6;
+    --border: #e5e5e5;
+}
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+    font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+        monospace;
+}
+.avtar {
+    font-size: 30px !important;
+}
+.row > * {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+/*material ui css*/
+.MuiPaper-elevation4 {
+    box-shadow: none !important;
+}
+.MuiTabs-fixed {
+    background-color: var(--baseColor);
+}
+.MuiTab-textColorPrimary.Mui-selected {
+    background-color: var(--border);
+}
+.MuiTab-wrapper {
+    color: var(--darktext);
 }
