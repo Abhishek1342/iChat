@@ -4,10 +4,10 @@ import React from "react";
 const Mymessage = (props) => {
     return (
         <div className="myMessageContainer">
-            <p>{props.message}</p>
-            <div>
+            <p className="message">{props.message}</p>
+            <div className=" timeStamp">
                 <p>{props.time}</p>
-                <i class="fas fa-check-double"></i>
+                <p>{props.status}</p>
             </div>
         </div>
     );
@@ -16,11 +16,13 @@ const Mymessage = (props) => {
 const Friendmessage = (props) => {
     return (
         <div className="friendMessageContainer">
-            <p>{props.message}</p>
-            <p>{props.time}</p>
+            <p className="message">{props.message}</p>
+            <p className=" timeStamp">{props.time}</p>
         </div>
     );
 };
+
+// scroll to bottom-------------------------------------
 
 const ChatSection = () => {
     return (
@@ -29,6 +31,7 @@ const ChatSection = () => {
                 <Mymessage
                     message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
                     time="13:40"
+                    status="seen"
                 />
                 <Friendmessage
                     message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
@@ -53,6 +56,12 @@ const ChatSection = () => {
                 <Mymessage
                     message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
                     time="13:40"
+                    status="Received"
+                />
+                <Mymessage
+                    message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
+                    time="13:40"
+                    status="Sent"
                 />
                 <Mymessage
                     message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
@@ -63,11 +72,7 @@ const ChatSection = () => {
                     time="13:40"
                 />
                 <Mymessage
-                    message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                    time="13:40"
-                />
-                <Mymessage
-                    message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
+                    message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfddddddddddddddddddddddddddddddkjkjkj  jkdjfkdjfkd fjdkkkkkkkkkdkdjfkjd kfjd fkjdkf dkfjdkfjd kfjdkfjdkjf dkfjdkfjkdjfkd fjdf dkjfkdjfkdjfkd djf kd kd fkjdkf kdjfkdjfdjfkdjhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
                     time="13:40"
                 />
                 <Friendmessage
@@ -83,7 +88,7 @@ const ChatSection = () => {
                     time="13:40"
                 />
                 <Friendmessage
-                    message="hi fdghs hsdffhk khdfkdkfgkdgfg dfdgfdg "
+                    message="hi fdghs hsdffhk khdfkdkfgkdgfg dfdgabhishekdg "
                     time="13:40"
                 />
             </div>
