@@ -12,8 +12,6 @@ import {
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-// import Typography from "@material-ui/core/Typography";
-// import Box from "@material-ui/core/Box";
 import SearchUser from "./SearchUser";
 
 //################################################################
@@ -111,8 +109,8 @@ const UserListPannel = () => {
                                         className="userProfileImage"
                                         alt="user profile"
                                     />
-                                    <span class="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
-                                        <span class="visually-hidden">
+                                    <span className="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
+                                        <span className="visually-hidden">
                                             New alerts
                                         </span>
                                     </span>
@@ -130,9 +128,9 @@ const UserListPannel = () => {
                                             <p className="userMessageAndTime">
                                                 13:40
                                             </p>
-                                            <span class="mt-1 badge bg-success">
+                                            <span className="mt-1 badge bg-success">
                                                 99
-                                                <span class="visually-hidden">
+                                                <span className="visually-hidden">
                                                     unread messages
                                                 </span>
                                             </span>
@@ -161,7 +159,7 @@ const UserListPannel = () => {
                                         <div className="MessageTimeAndCount">
                                             <button
                                                 type="button"
-                                                class="btn btn-primary"
+                                                className="btn btn-primary"
                                             >
                                                 Add Friend
                                             </button>

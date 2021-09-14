@@ -4,36 +4,34 @@
     border-radius: 20px;
     margin: 20px;
 }
-.container{
+.container {
     margin-top: 100px;
 }
-.form-group{
+.form-group {
     margin-bottom: 16px;
 }
-.login-head{
+.login-head {
     margin-bottom: 20px;
     text-align: center;
     font-size: 25px;
-    color:#797979;
+    color: #797979;
     font-weight: 600;
 }
 .loginsignup-container{
     display: flex;
     justify-content: center;
 }
- .forgetpassword{
-    color:#46B3E6;
+.forgetpassword {
+    color: #46b3e6;
     font-size: 15px;
     text-decoration: none;
 }
-.loginbtn{
+.loginbtn {
     margin-top: 114px;
 }
-.signupbtn{
+.signupbtn {
     margin-top: 45px;
 }
-
-
 .image-upload>input {
     display: none;
   }

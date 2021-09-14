@@ -13,6 +13,13 @@ import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
 import { makeStyles } from "@material-ui/core/styles";
 
+// material ui dialog------------------------------------------
+
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
+
 //#######################################################
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +65,29 @@ const HeaderLeft = () => {
         prevOpen.current = open;
     }, [open]);
 
-    //#########################################################
+    //################## material ui dialog states start #######################################
+
+    const [openDialog, setOpenDialog] = React.useState(false);
+    const [scroll, setScroll] = React.useState("paper");
+
+    const handleClickOpenDialog = (scrollType) => () => {
+        setOpenDialog(true);
+        setScroll(scrollType);
+    };
+
+    const handleCloseDialog = () => {
+        setOpenDialog(false);
+    };
+
+    const descriptionElementRef = React.useRef(null);
+    React.useEffect(() => {
+        if (openDialog) {
+            const { current: descriptionElement } = descriptionElementRef;
+            if (descriptionElement !== null) {
+                descriptionElement.focus();
+            }
+        }
+    }, [openDialog]);
 
     return (
         <div className="headerContainer">
@@ -68,7 +97,7 @@ const HeaderLeft = () => {
                 alt="profile"
             />
             <div className="leftHeaderRightContainer">
-                <Button>
+                <Button onClick={handleClickOpenDialog("paper")}>
                     <i className="fas fa-bell iconColor "></i>
                 </Button>
 
@@ -122,6 +151,51 @@ const HeaderLeft = () => {
                 </Popper>
                 {/*-------------------------material ui component end -------------------------*/}
             </div>
+            {/*-------------------------material ui DIALOG component START -------------------------*/}
+
+            <Dialog
+                open={openDialog}
+                onClose={handleCloseDialog}
+                scroll={scroll}
+                fullWidth={true}
+                maxWidth="md"
+                aria-labelledby="scroll-dialog-title"
+                aria-describedby="scroll-dialog-description"
+            >
+                <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
+                <DialogContent dividers={scroll === "paper"}>
+                    <div className="notificationContainer">
+                        <div className="notificationDetail">
+                            <img
+                                className="userProfileImageHeader"
+                                src={profile}
+                                alt="profile"
+                            />
+
+                            <h5 className="notificationName">
+                                Abhishek Kumar{" "}
+                            </h5>
+                            <p className="notificationType">
+                                sent you friend request
+                            </p>
+                        </div>
+                        <div>
+                            <button type="button" className="btn btn-danger">
+                                Cancle
+                            </button>
+                            <button type="button" className="btn btn-primary">
+                                Accept
+                            </button>
+                        </div>
+                    </div>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            {/*-------------------------material ui DIALOG component END -------------------------*/}
         </div>
     );
 };
