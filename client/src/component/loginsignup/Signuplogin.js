@@ -5,10 +5,10 @@ const Signuplogin=()=>{
     return(
         <>
         <div className="container">
-        <div className='loginsignup'>
-            <div className="row">
-            <div className="col-md-5">
-            <div className="signup">
+             <div className='row'>
+                 <div className='loginsignup-container'>
+                 <div className="col-md-4">
+                 <div className="signup">
                     <div className="login-head">
                         Login
                     </div>
@@ -27,9 +27,9 @@ const Signuplogin=()=>{
                         </div>
                     </form>
                 </div>
-            </div>
-            <div className="offset-md-2 col-md-5">
-                <div className="signup">
+                 </div>
+                 <div className="col-md-4">
+                 <div className="signup">
                 <div className="login-head">
                         Signup
                     </div>
@@ -51,10 +51,10 @@ const Signuplogin=()=>{
                         </div>
                     </form>
                 </div>
-            </div>
-          </div>
-        </div>
-        </div>
+                 </div>
+             </div>
+             </div>
+             </div>
         </>
     )
 }

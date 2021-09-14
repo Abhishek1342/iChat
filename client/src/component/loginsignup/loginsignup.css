@@ -1,5 +1,5 @@
 .signup{
-    padding:20px;
+    padding:30px;
     box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
     border-radius: 20px;
     margin: 20px;
@@ -17,8 +17,9 @@
     color:#797979;
     font-weight: 600;
 }
-.loginsignup{
-    margin-left: 160px;
+.loginsignup-container{
+    display: flex;
+    justify-content: center;
 }
  .forgetpassword{
     color:#46B3E6;
@@ -31,6 +32,21 @@
 .signupbtn{
     margin-top: 45px;
 }
-.forgetpass-container{
-    margin-left: 350px;
+
+
+.image-upload>input {
+    display: none;
+  }
+#profile-img{
+width:70px;
+height: 70px;
+cursor: pointer;
+text-align: center;
+transition: all 0.5s ease;
+display: block;
+margin-left: 100px
+}
+#profile-img:hover{
+    transform:scale(1.02, 1.02);
+    opacity: 0.7;
 }

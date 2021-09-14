@@ -4,9 +4,9 @@ const Forgetpassword = ()=>{
     return(
         <>
         <div className="container">
-           <div className="forgetpass-container">
             <div className="row">
-             <div className="offst-md-4 col-md-6">
+            <div className="col-md-12">
+             <div className="offset-md-4 col-md-4">
             <div className="signup">
                     <div className="login-head">
                         Forget Password
@@ -22,6 +22,9 @@ const Forgetpassword = ()=>{
                             <NavLink to='' className="forgetpassword">Resend-email</NavLink>
                         </div>
                         <div className="form-group loginbtn">
+                            <div className='text-center my-1'>
+                            <NavLink to="/" className='forgetpassword'>Login/Signup</NavLink>
+                            </div>
                             <input type='submit'className="btn btn-primary form-control" value="Send Email"></input>
                         </div>
                     </form>
