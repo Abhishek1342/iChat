@@ -151,18 +151,42 @@ const HeaderLeft = () => {
                 </Popper>
                 {/*-------------------------material ui component end -------------------------*/}
             </div>
+            {/*-------------------------material ui DIALOG component START -------------------------*/}
 
             <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
                 scroll={scroll}
+                fullWidth={true}
+                maxWidth="md"
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
             >
                 <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
-                    <div>
-                        <p>hi</p>
+                    <div className="notificationContainer">
+                        <div className="notificationDetail">
+                            <img
+                                className="userProfileImageHeader"
+                                src={profile}
+                                alt="profile"
+                            />
+
+                            <h5 className="notificationName">
+                                Abhishek Kumar{" "}
+                            </h5>
+                            <p className="notificationType">
+                                sent you friend request
+                            </p>
+                        </div>
+                        <div>
+                            <button type="button" className="btn btn-danger">
+                                Cancle
+                            </button>
+                            <button type="button" className="btn btn-primary">
+                                Accept
+                            </button>
+                        </div>
                     </div>
                 </DialogContent>
                 <DialogActions>
@@ -171,6 +195,7 @@ const HeaderLeft = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
+            {/*-------------------------material ui DIALOG component END -------------------------*/}
         </div>
     );
 };

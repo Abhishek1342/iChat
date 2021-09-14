@@ -24,6 +24,43 @@
     justify-content: space-between;
     align-items: center;
 }
+/*Notification modal*/
+.notificationContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+.notificationContainer:hover {
+    background-color: var(--baseColor);
+    cursor: pointer;
+}
+.notificationDetail {
+    display: flex;
+    align-items: center;
+}
+.notificationName {
+    margin: 0 5px 0 20px;
+    color: var(--darktext);
+    font-weight: 600;
+}
+.notificationType {
+    color: var(--icon);
+}
+
+.btn-danger {
+    margin: 0 20px;
+    background-color: var(--white);
+    border: 1px solid var(--red);
+    color: var(--red);
+}
+.MuiDialogContent-root {
+    padding: 0 !important;
+}
 /*-------------------------Left pannel------------------------------*/
 .usersName {
     font-size: 20px;
@@ -138,11 +175,14 @@
 /*-------------------------Chat section start------------------------------*/
 .chatContainer {
     width: 100%;
+    min-width: 600px;
     background-color: var(--baseColor);
     height: calc(100vh - 60px);
+    overflow-x: auto;
 }
 .chatViewer {
     height: calc(100vh - 128px);
+    display: flex;
     flex-direction: column;
     padding: 10px 20px;
     overflow-y: auto;
@@ -157,13 +197,13 @@
     background-color: var(--border);
     max-width: 500px;
     min-width: 150px;
-    min-height: 50px;
+    width: fit-content;
     text-align: left;
     font: 400 0.9em "Open Sans", sans-serif;
     border: 1px solid var(--border);
     border-radius: 10px;
-    align-self: flex-end;
     display: flex;
+    align-self: flex-end;
     justify-content: space-between;
 }
 .myMessageContainer::after {
@@ -185,8 +225,8 @@
     padding: 10px;
     background-color: var(--white);
     min-width: 150px;
+    width: fit-content;
     max-width: 500px;
-    min-height: 50px;
     text-align: left;
     font: 400 0.9em "Open Sans", sans-serif;
     border: 1px solid var(--white);
@@ -209,7 +249,7 @@
     font-size: 16px;
 }
 .timeStamp {
-    margin: 0 0 0 5px;
+    margin: 20px 0 0 10px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

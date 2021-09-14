@@ -109,8 +109,8 @@ const UserListPannel = () => {
                                         className="userProfileImage"
                                         alt="user profile"
                                     />
-                                    <span class="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
-                                        <span class="visually-hidden">
+                                    <span className="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
+                                        <span className="visually-hidden">
                                             New alerts
                                         </span>
                                     </span>
@@ -128,9 +128,9 @@ const UserListPannel = () => {
                                             <p className="userMessageAndTime">
                                                 13:40
                                             </p>
-                                            <span class="mt-1 badge bg-success">
+                                            <span className="mt-1 badge bg-success">
                                                 99
-                                                <span class="visually-hidden">
+                                                <span className="visually-hidden">
                                                     unread messages
                                                 </span>
                                             </span>
@@ -159,7 +159,7 @@ const UserListPannel = () => {
                                         <div className="MessageTimeAndCount">
                                             <button
                                                 type="button"
-                                                class="btn btn-primary"
+                                                className="btn btn-primary"
                                             >
                                                 Add Friend
                                             </button>

@@ -41,10 +41,7 @@ const ChatSection = () => {
                     message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
                     time="13:40"
                 />
-                <Friendmessage
-                    message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                    time="13:40"
-                />
+                <Friendmessage message="hi fdghs  " time="13:40" />
                 <Friendmessage
                     message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
                     time="13:40"
@@ -54,7 +51,7 @@ const ChatSection = () => {
                     time="13:40"
                 />
                 <Mymessage
-                    message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
+                    message="hi hi fdghs dfdgfdg "
                     time="13:40"
                     status="Received"
                 />
@@ -100,7 +97,7 @@ const ChatSection = () => {
                     placeholder="Write message"
                 />
                 <button type="button" className="btn btn-primary">
-                    <i class="fab fa-telegram-plane"></i>
+                    <i className="fab fa-telegram-plane"></i>
                 </button>
             </div>
         </div>
