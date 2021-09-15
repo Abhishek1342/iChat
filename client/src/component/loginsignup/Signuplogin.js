@@ -5,10 +5,10 @@ const Signuplogin = () => {
     return (
         <>
         <div className="container">
-             <div className='row'>
-                 <div className='loginsignup-container'>
-                 <div className="col-md-4">
-                 <div className="signup">
+        <div className='loginsignup'>
+            <div className="row">
+            <div className="col-md-5">
+            <div className="signup">
                     <div className="login-head">
                         Login
                     </div>
@@ -20,9 +20,19 @@ const Signuplogin = () => {
                             <input type='password' placeholder='Password' className="form-control"></input>
                         </div>
                         <div className="form-group">
-                            <NavLink to='/forgetpassword' className="forgetpassword">Forget password</NavLink>
+                            <Link to='/forgetpassword' className="forgetpassword">Forget password</Link>
                         </div>
-                        <div className="offset-md-2 col-md-5">
+                        <div className="form-group loginbtn">
+                                        <input
+                                            type="submit"
+                                            className="btn btn-primary form-control"
+                                            value="Login"
+                                        ></input>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div className="offset-md-2 col-md-5">
                             <div className="signup">
                                 <div className="login-head">Signup</div>
                                 <form className="from">
@@ -64,19 +74,10 @@ const Signuplogin = () => {
                                 </form>
                             </div>
                         </div>
-                    </form>
                 </div>
-                 </div>
-                 <div className="col-md-4">
-                 <div className="signup">
-                <div className="login-head">
-                        Signup
-                    </div>
-                </div>
-                 </div>
-             </div>
-             </div>
-             </div>
+            </div>
+          </div>
+
         </>
     );
 };
