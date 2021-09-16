@@ -4,35 +4,46 @@ import "./loginsignup.css";
 const Signuplogin = () => {
     return (
         <>
-        <div className="container">
-        <div className='loginsignup'>
-            <div className="row">
-            <div className="col-md-5">
-            <div className="signup">
-                    <div className="login-head">
-                        Login
-                    </div>
-                    <form className="from">
-                        <div className="form-group">
-                            <input type='text' placeholder='Username/Email' className="form-control"></input>
-                        </div>
-                        <div className="form-group">
-                            <input type='password' placeholder='Password' className="form-control"></input>
-                        </div>
-                        <div className="form-group">
-                            <Link to='/forgetpassword' className="forgetpassword">Forget password</Link>
-                        </div>
-                        <div className="form-group loginbtn">
+            <div className="container">
+                <div className="loginsignup">
+                    <div className="row">
+                        <div className="col-md-5">
+                            <div className="signup">
+                                <div className="login-head">Login</div>
+                                <form className="from">
+                                    <div className="form-group">
+                                        <input
+                                            type="text"
+                                            placeholder="Username/Email"
+                                            className="form-control"
+                                        ></input>
+                                    </div>
+                                    <div className="form-group">
+                                        <input
+                                            type="password"
+                                            placeholder="Password"
+                                            className="form-control"
+                                        ></input>
+                                    </div>
+                                    <div className="form-group">
+                                        <Link
+                                            to="/forgetpassword"
+                                            className="forgetpassword"
+                                        >
+                                            Forget password
+                                        </Link>
+                                    </div>
+                                    <div className="form-group loginbtn">
                                         <input
                                             type="submit"
                                             className="btn btn-primary form-control"
                                             value="Login"
                                         ></input>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-                    </form>
-                </div>
-            </div>
-            <div className="offset-md-2 col-md-5">
+                        <div className="offset-md-2 col-md-5">
                             <div className="signup">
                                 <div className="login-head">Signup</div>
                                 <form className="from">
@@ -74,10 +85,9 @@ const Signuplogin = () => {
                                 </form>
                             </div>
                         </div>
+                    </div>
                 </div>
             </div>
-          </div>
-
         </>
     );
 };

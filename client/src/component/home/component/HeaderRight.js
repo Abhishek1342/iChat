@@ -16,7 +16,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     dropdown: {
-        left: "-30px",
+        left: "-20px !important",
+        top: "15px !important",
         zIndex: "2000",
     },
 }));
