@@ -1,15 +1,16 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
-const { body, validationResult, check } = require("express-validator");
+const { body, validationResult } = require("express-validator");
 require("../DB/DBConnection");
 const User = require("../model/user");
 const router = express.Router();
+const jwt = require("jsonwebtoken");
 
 router.post(
     "/login",
     [
-        body("usernameEmail").notEmpty().withMessage("Fill all fields"),
-        body("password").notEmpty().withMessage("fill all fields"),
+        body("usernameEmail", "Fill all fields").exists(),
+        body("password", "Fill all fields").exists(),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -17,21 +18,19 @@ router.post(
             return res.status(400).json({ err: errors.array() });
         }
         const { usernameEmail, password } = req.body;
-        if (!usernameEmail || !password) {
-            return res.status(400).json({ err: "fill all fields" });
-        }
+
         try {
-            const userEmail = await User.findOne({ email: usernameEmail });
-            if (!userEmail) {
-                const userName = await User.findOne({
+            let user = await User.findOne({ email: usernameEmail });
+            if (!user) {
+                user = await User.findOne({
                     username: usernameEmail,
                 });
-                if (!userName) {
+                if (!user) {
                     return res.status(400).json({ err: "Account not found" });
                 } else {
                     const matchUserNamePass = await bcrypt.compare(
                         password,
-                        userName.password
+                        user.password
                     );
                     if (!matchUserNamePass) {
                         return res
@@ -43,35 +42,31 @@ router.post(
             } else {
                 const matchemailPass = await bcrypt.compare(
                     password,
-                    userEmail.password
+                    user.password
                 );
                 if (!matchemailPass) {
                     return res.status(400).json({ err: "Invalid credentials" });
                 }
+                const payload = {
+                    user: {
+                        id: user.id,
+                    },
+                };
                 return res.status(200).json({ msg: "Login successfull" });
             }
         } catch (err) {
-            return res.status(500).json({ err: "server error" });
             console.log(err);
+            return res.status(500).json({ err: "server error" });
         }
     }
 );
 router.post(
     "/signup",
     [
-        body("username").notEmpty().isString(),
-        body("email")
-            .notEmpty()
-            .isEmail()
-            .withMessage("Enter a valid E-mail address"),
-        body("password")
-            .notEmpty()
-            .isLength({ min: 6 })
-            .withMessage("Minimum 6 character"),
-        body("cpassword")
-            .notEmpty()
-            .isLength({ min: 6 })
-            .withMessage("Minimum 6 character"),
+        body("username", "invalid username").exists().isString(),
+        body("email", "Enter a valid E-mail address").exists().isEmail(),
+        body("password", "Minimum 6 character").exists().isLength({ min: 6 }),
+        body("cpassword", "Minimum 6 character").exists().isLength({ min: 6 }),
     ],
     async (req, res) => {
         const errors = validationResult(req);
@@ -103,15 +98,17 @@ router.post(
                     });
                 }
                 const newUser = new User({ username, email, password });
-                const addUser = await newUser.save();
-                if (addUser) {
-                    return res
-                        .status(200)
-                        .json({ err: "successfully registered" });
-                }
+                const user = await newUser.save();
+                const data = {
+                    user: {
+                        id: user.id,
+                    },
+                };
+                const authToken = await jwt.sign(data, process.env.AUTH_TOKEN);
+                res.json({ authToken });
             } catch (err) {
-                return res.status(500).json({ err: "Server error" });
                 console.log(err);
+                return res.status(500).json({ err: "Server error" });
             }
         }
     }
