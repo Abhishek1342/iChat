@@ -6,6 +6,11 @@ const User = require("../model/user");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 
+// ROUTE 1 : FOR USER TO LOGIN
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/login
+//NO AUTHENTICATION REQUIRED
+
 router.post(
     "/login",
     [
@@ -37,7 +42,15 @@ router.post(
                             .status(400)
                             .json({ err: "Invalid credentials" });
                     }
-                    return res.status(200).json({ msg: "Login successfull" });
+                    const payload = {
+                        user: {
+                            id: user.id,
+                        },
+                    };
+                    const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
+                    return res
+                        .status(200)
+                        .json({ msg: "Login successfull", authToken });
                 }
             } else {
                 const matchemailPass = await bcrypt.compare(
@@ -52,7 +65,10 @@ router.post(
                         id: user.id,
                     },
                 };
-                return res.status(200).json({ msg: "Login successfull" });
+                const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
+                return res
+                    .status(200)
+                    .json({ msg: "Login successfull", authToken });
             }
         } catch (err) {
             console.log(err);
@@ -60,6 +76,12 @@ router.post(
         }
     }
 );
+
+// ROUTE 1 : FOR USER TO SIGNUP ACCOUNT
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/signup
+//NO AUTHENTICATION REQUIRED
+
 router.post(
     "/signup",
     [
@@ -99,13 +121,16 @@ router.post(
                 }
                 const newUser = new User({ username, email, password });
                 const user = await newUser.save();
-                const data = {
+                const payload = {
                     user: {
                         id: user.id,
                     },
                 };
-                const authToken = await jwt.sign(data, process.env.AUTH_TOKEN);
-                res.json({ authToken });
+                const authToken = await jwt.sign(
+                    payload,
+                    process.env.AUTH_TOKEN
+                );
+                res.json({ msg: "signup successfull", authToken });
             } catch (err) {
                 console.log(err);
                 return res.status(500).json({ err: "Server error" });
