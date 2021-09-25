@@ -5,6 +5,7 @@ require("../DB/DBConnection");
 const User = require("../model/user");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
+const authUser = require("../middleware/auth");
 
 // ROUTE 1 : FOR USER TO LOGIN
 // METHOD : POST
@@ -138,5 +139,19 @@ router.post(
         }
     }
 );
+
+router.post("/new", authUser, async (req, res) => {
+    try {
+        const userid = req.user.id;
+        const user = await User.findById(userid).select("-password");
+        if (!user) {
+            return res.status(401).json({ err: "Unauthorized" });
+        }
+        res.status(200).json(user);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({ err: "Server error" });
+    }
+});
 
 module.exports = router;
