@@ -5,7 +5,7 @@ const authUser = async (req, res, next) => {
     const token = req.header("auth-token");
     try {
         if (!token) {
-            return res.status(401).json({ err: "Invalid token" });
+            return res.status(401).json({ err: "Access Denied" });
         }
         const data = jwt.verify(token, process.env.AUTH_TOKEN);
         req.user = data.user;

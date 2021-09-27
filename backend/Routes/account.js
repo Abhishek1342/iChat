@@ -69,7 +69,8 @@ router.post(
                 const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
                 return res
                     .status(200)
-                    .json({ msg: "Login successfull", authToken });
+                    .res.header("auth-token", token)
+                    .json({ msg: "Login successfull" });
             }
         } catch (err) {
             console.log(err);
@@ -131,7 +132,9 @@ router.post(
                     payload,
                     process.env.AUTH_TOKEN
                 );
-                res.json({ msg: "signup successfull", authToken });
+                res.status(200).header("auth-token", token).json({
+                    msg: "signup successfull",
+                });
             } catch (err) {
                 console.log(err);
                 return res.status(500).json({ err: "Server error" });
