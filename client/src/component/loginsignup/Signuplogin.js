@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./loginsignup.css";
 const Signuplogin = () => {
+    const [login, setLogin] = useState({
+        usernameEmail: "",
+        password: "",
+    });
+    const onChange = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setLogin({ ...login, [name]: value });
+    };
+    console.log(login);
     return (
         <>
             <div className="container">
@@ -16,6 +26,9 @@ const Signuplogin = () => {
                                             type="text"
                                             placeholder="Username/Email"
                                             className="form-control"
+                                            name="usernameEmail"
+                                            value={login.usernameEmail}
+                                            onChange={onChange}
                                         ></input>
                                     </div>
                                     <div className="form-group">
@@ -23,6 +36,9 @@ const Signuplogin = () => {
                                             type="password"
                                             placeholder="Password"
                                             className="form-control"
+                                            name="password"
+                                            value={login.password}
+                                            onChange={onChange}
                                         ></input>
                                     </div>
                                     <div className="form-group">

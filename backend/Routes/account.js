@@ -143,7 +143,7 @@ router.post(
     }
 );
 
-router.post("/new", authUser, async (req, res) => {
+router.get("/new", authUser, async (req, res) => {
     try {
         const userid = req.user.id;
         const user = await User.findById(userid).select("-password");
