@@ -6,12 +6,64 @@ const Signuplogin = () => {
         usernameEmail: "",
         password: "",
     });
+
+    const [signup, setSignup] = useState({
+        username: "",
+        email: "",
+        password: "",
+        cpassword: "",
+    });
+
     const onChange = (e) => {
         let name = e.target.name;
         let value = e.target.value;
         setLogin({ ...login, [name]: value });
     };
-    console.log(login);
+
+    const onChangeSignup = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        setSignup({ ...signup, [name]: value });
+    };
+
+    const submitLogin = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch("http://localhost:5000/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(login),
+            });
+
+            return console.log(res.json());
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const submitSignup = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await fetch("http://localhost:5000/api/signup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(signup),
+            });
+            if (!res) {
+                console.log("Something wnet wrong");
+            }
+            return res.json();
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
     return (
         <>
             <div className="container">
@@ -54,6 +106,7 @@ const Signuplogin = () => {
                                             type="submit"
                                             className="btn btn-primary form-control"
                                             value="Login"
+                                            onClick={submitLogin}
                                         ></input>
                                     </div>
                                 </form>
@@ -68,6 +121,9 @@ const Signuplogin = () => {
                                             type="text"
                                             placeholder="Username"
                                             className="form-control"
+                                            name="username"
+                                            value={signup.username}
+                                            onChange={onChangeSignup}
                                         ></input>
                                     </div>
                                     <div className="form-group">
@@ -75,6 +131,9 @@ const Signuplogin = () => {
                                             type="email"
                                             placeholder="Email"
                                             className="form-control"
+                                            name="email"
+                                            value={signup.email}
+                                            onChange={onChangeSignup}
                                         ></input>
                                     </div>
                                     <div className="form-group">
@@ -82,6 +141,9 @@ const Signuplogin = () => {
                                             type="password"
                                             placeholder="Password"
                                             className="form-control"
+                                            name="password"
+                                            value={signup.password}
+                                            onChange={onChangeSignup}
                                         ></input>
                                     </div>
                                     <div className="form-group">
@@ -89,6 +151,9 @@ const Signuplogin = () => {
                                             type="password"
                                             placeholder="Confirm Password"
                                             className="form-control"
+                                            name="cpassword"
+                                            value={signup.cpassword}
+                                            onChange={onChangeSignup}
                                         ></input>
                                     </div>
                                     <div className="form-group signupbtn">
@@ -96,6 +161,7 @@ const Signuplogin = () => {
                                             type="submit"
                                             className="btn btn-primary form-control"
                                             value="Signup"
+                                            onClick={submitSignup}
                                         ></input>
                                     </div>
                                 </form>

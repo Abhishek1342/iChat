@@ -51,7 +51,8 @@ router.post(
                     const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
                     return res
                         .status(200)
-                        .json({ msg: "Login successfull", authToken });
+                        .header("auth-token", authToken)
+                        .json({ msg: "Login successfull" });
                 }
             } else {
                 const matchemailPass = await bcrypt.compare(
@@ -69,7 +70,7 @@ router.post(
                 const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
                 return res
                     .status(200)
-                    .res.header("auth-token", token)
+                    .header("auth-token", authToken)
                     .json({ msg: "Login successfull" });
             }
         } catch (err) {
@@ -100,6 +101,9 @@ router.post(
             const { username, email, password, cpassword } = req.body;
 
             try {
+                if (!username.match("^[A-Za-z][A-Za-z0-9_]{3,29}$")) {
+                    return res.status(400).json({ err: "username is invalid" });
+                }
                 const existingUsername = await User.findOne({
                     username: username,
                 });
@@ -132,7 +136,7 @@ router.post(
                     payload,
                     process.env.AUTH_TOKEN
                 );
-                res.status(200).header("auth-token", token).json({
+                res.status(200).header("auth-token", authToken).json({
                     msg: "signup successfull",
                 });
             } catch (err) {
