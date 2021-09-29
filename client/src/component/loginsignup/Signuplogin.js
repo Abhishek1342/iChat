@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./loginsignup.css";
 const Signuplogin = () => {
+    let history = useHistory();
     const [login, setLogin] = useState({
         usernameEmail: "",
         password: "",
@@ -34,11 +35,19 @@ const Signuplogin = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: "include",
                 body: JSON.stringify(login),
             });
-
-            return console.log(res.json());
+            const json = await res.json();
+            if (!json) {
+                console.log("Something wnet wrong");
+            }
+            if (json.success === true) {
+                localStorage.setItem("token", json.authToken);
+                history.push("/home");
+            } else {
+                history.push("/");
+                setLogin({ usernameEmail: "", password: "" });
+            }
         } catch (err) {
             console.log(err);
         }
@@ -52,13 +61,18 @@ const Signuplogin = () => {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                credentials: "include",
                 body: JSON.stringify(signup),
             });
-            if (!res) {
+            const json = await res.json();
+            if (!json) {
                 console.log("Something wnet wrong");
             }
-            return res.json();
+            if (json.success === true) {
+                localStorage.setItem("token", json.authToken);
+                history.push("/home");
+            } else {
+                history.push("/");
+            }
         } catch (err) {
             console.log(err);
         }

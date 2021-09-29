@@ -15,13 +15,14 @@ const authUser = require("../middleware/auth");
 router.post(
     "/login",
     [
-        body("usernameEmail", "Fill all fields").exists(),
-        body("password", "Fill all fields").exists(),
+        body("usernameEmail", "Fill all fields").not().isEmpty(),
+        body("password", "Fill all fields").not().isEmpty(),
     ],
     async (req, res) => {
+        let success = false;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ err: errors.array() });
+            return res.status(400).json({ success, err: errors.array() });
         }
         const { usernameEmail, password } = req.body;
 
@@ -31,37 +32,19 @@ router.post(
                 user = await User.findOne({
                     username: usernameEmail,
                 });
-                if (!user) {
-                    return res.status(400).json({ err: "Account not found" });
-                } else {
-                    const matchUserNamePass = await bcrypt.compare(
-                        password,
-                        user.password
-                    );
-                    if (!matchUserNamePass) {
-                        return res
-                            .status(400)
-                            .json({ err: "Invalid credentials" });
-                    }
-                    const payload = {
-                        user: {
-                            id: user.id,
-                        },
-                    };
-                    const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
-                    return res
-                        .status(200)
-                        .header("auth-token", authToken)
-                        .json({ msg: "Login successfull" });
-                }
+            }
+            if (!user) {
+                return res
+                    .status(400)
+                    .json({ success, err: "Account not found" });
             } else {
-                const matchemailPass = await bcrypt.compare(
-                    password,
-                    user.password
-                );
-                if (!matchemailPass) {
-                    return res.status(400).json({ err: "Invalid credentials" });
+                const matchPass = await bcrypt.compare(password, user.password);
+                if (!matchPass) {
+                    return res
+                        .status(400)
+                        .json({ success, err: "Invalid credentials" });
                 }
+                success = true;
                 const payload = {
                     user: {
                         id: user.id,
@@ -70,9 +53,27 @@ router.post(
                 const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
                 return res
                     .status(200)
-                    .header("auth-token", authToken)
-                    .json({ msg: "Login successfull" });
+                    .json({ success, authToken, msg: "Login successfull" });
             }
+            // } else {
+            //     const matchemailPass = await bcrypt.compare(
+            //         password,
+            //         user.password
+            //     );
+            //     if (!matchemailPass) {
+            //         return res.status(400).json({ err: "Invalid credentials" });
+            //     }
+            //     const payload = {
+            //         user: {
+            //             id: user.id,
+            //         },
+            //     };
+            //     const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
+            //     return res
+            //         .status(200)
+            //         .header("auth-token", authToken)
+            //         .json({ msg: "Login successfull" });
+            // }
         } catch (err) {
             console.log(err);
             return res.status(500).json({ err: "server error" });
@@ -94,15 +95,18 @@ router.post(
         body("cpassword", "Minimum 6 character").exists().isLength({ min: 6 }),
     ],
     async (req, res) => {
+        let success = false;
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ err: errors.array() });
+            return res.status(400).json({ success, err: errors.array() });
         } else {
             const { username, email, password, cpassword } = req.body;
 
             try {
                 if (!username.match("^[A-Za-z][A-Za-z0-9_]{3,29}$")) {
-                    return res.status(400).json({ err: "username is invalid" });
+                    return res
+                        .status(400)
+                        .json({ success, err: "username is invalid" });
                 }
                 const existingUsername = await User.findOne({
                     username: username,
@@ -113,12 +117,12 @@ router.post(
                 if (existingUsername) {
                     return res
                         .status(400)
-                        .json({ err: "username already exists" });
+                        .json({ success, err: "username already exists" });
                 }
                 if (existingEmail) {
                     return res
                         .status(400)
-                        .json({ err: "Email already exists" });
+                        .json({ success, err: "Email already exists" });
                 }
                 if (password != cpassword) {
                     return res.status(400).json({
@@ -127,6 +131,7 @@ router.post(
                 }
                 const newUser = new User({ username, email, password });
                 const user = await newUser.save();
+                success = true;
                 const payload = {
                     user: {
                         id: user.id,
@@ -136,7 +141,9 @@ router.post(
                     payload,
                     process.env.AUTH_TOKEN
                 );
-                res.status(200).header("auth-token", authToken).json({
+                res.status(200).json({
+                    success,
+                    authToken,
                     msg: "signup successfull",
                 });
             } catch (err) {
