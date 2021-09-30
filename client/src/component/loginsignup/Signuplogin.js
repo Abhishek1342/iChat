@@ -3,6 +3,7 @@ import { Link, useHistory } from "react-router-dom";
 import "./loginsignup.css";
 const Signuplogin = () => {
     let history = useHistory();
+
     const [login, setLogin] = useState({
         usernameEmail: "",
         password: "",
@@ -72,11 +73,20 @@ const Signuplogin = () => {
                 history.push("/home");
             } else {
                 history.push("/");
+                setSignup({
+                    username: "",
+                    Email: "",
+                    password: "",
+                    cpassword: "",
+                });
             }
         } catch (err) {
             console.log(err);
         }
     };
+    if (!localStorage.getItem("token")) {
+        history.push("/");
+    } else history.push("/home");
 
     return (
         <>
