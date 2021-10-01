@@ -70,7 +70,7 @@ const Signuplogin = () => {
             }
             if (json.success === true) {
                 localStorage.setItem("token", json.authToken);
-                history.push("/home");
+                history.push("/profile");
             } else {
                 history.push("/");
                 setSignup({

@@ -1,6 +1,6 @@
-.signup{
-    padding:20px;
-    box-shadow: 0px 2px 3px rgba(0,0,0,0.2);
+.signup {
+    padding: 20px;
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.2);
     border-radius: 20px;
     margin: 20px;
 }
@@ -8,7 +8,7 @@
     margin-top: 100px;
 }
 .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 26px;
 }
 .login-head {
     margin-bottom: 20px;
@@ -17,7 +17,7 @@
     color: #797979;
     font-weight: 600;
 }
-.loginsignup{
+.loginsignup {
     margin-left: 160px;
 }
 .forgetpassword {
@@ -31,19 +31,27 @@
 .signupbtn {
     margin-top: 45px;
 }
-.image-upload>input {
+.image-upload > input {
     display: none;
-  }
-#file-img{
-width:70px;
-height: 70px;
-cursor: pointer;
-text-align: center;
-transition: all 0.9s ease;
-display: block;
-margin-left: 110px
 }
-#file-img:hover{
-    transform:scale(1.02, 1.02);
-    opacity: 0.7;
+.image-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.upload-file-btn {
+    font-size: 80px;
+    font-weight: 100;
+    padding: 0 40px 20px 40px;
+    margin-bottom: 20px;
+    border: 2px dashed #e5e5e5;
+    border-radius: 8px;
+    color: #797979;
+    transition: all 0.3s ease;
+}
+
+.upload-file-btn:hover {
+    color: var(--blue);
+    cursor: pointer;
+    border-color: var(--blue);
 }

@@ -13,15 +13,16 @@ const Profile = () => {
                                         <div className="form-group">
                                             <div className="image-upload">
                                                 <label htmlFor="file-input">
-                                                    <img
-                                                        src="pro-img.jpg"
-                                                        id="file-img"
-                                                        alt="upload Profile"
-                                                    />
+                                                    <span className="upload-file-btn">
+                                                        +
+                                                    </span>
                                                 </label>
                                                 <input
                                                     id="file-input"
                                                     type="file"
+                                                    accept="image/*"
+                                                    size="2000000"
+                                                    name="profileImage"
                                                 />
                                             </div>
                                         </div>
@@ -30,6 +31,7 @@ const Profile = () => {
                                                 type="text"
                                                 placeholder="Name"
                                                 className="form-control"
+                                                name="name"
                                             ></input>
                                         </div>
                                         <div className="form-group">
@@ -37,10 +39,14 @@ const Profile = () => {
                                                 type="number"
                                                 placeholder="Age"
                                                 className="form-control"
+                                                name="age"
                                             ></input>
                                         </div>
                                         <div className="form-group">
-                                            <select className="form-select">
+                                            <select
+                                                className="form-select"
+                                                name="gender"
+                                            >
                                                 <option>Male</option>
                                                 <option>Female</option>
                                                 <option>Others</option>

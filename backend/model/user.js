@@ -15,6 +15,22 @@ const userSchema = new mongoose.Schema({
         required: true,
         min: 6,
     },
+    name: {
+        type: String,
+        required: true,
+    },
+    age: {
+        type: Number,
+    },
+    gender: {
+        type: String,
+    },
+    profileImage: {
+        type: String,
+    },
+    location: {
+        type: String,
+    },
     date: {
         type: Date,
         default: Date.now,
