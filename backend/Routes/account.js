@@ -67,4 +67,10 @@ router.post(
     ],
     accountController.setProfile
 );
+
+router.post("/location", (req, res) => {
+    const { location } = req.body;
+    console.log(location);
+    res.send(location);
+});
 module.exports = router;
