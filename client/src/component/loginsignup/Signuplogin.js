@@ -25,7 +25,7 @@ const Signuplogin = () => {
     const onChangeSignup = (e) => {
         let name = e.target.name;
         let value = e.target.value;
-        setSignup({ ...signup, [name]: value });
+        setSignup((signupPrev) => ({ ...signupPrev, [name]: value }));
     };
 
     const submitLogin = async (e) => {

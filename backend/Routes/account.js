@@ -69,8 +69,8 @@ router.post(
 );
 
 router.post("/location", (req, res) => {
-    const { location } = req.body;
-    console.log(location);
-    res.send(location);
+    const { longitude, latitude } = req.body;
+    console.log(longitude, latitude);
+    res.send({ longitude, latitude });
 });
 module.exports = router;

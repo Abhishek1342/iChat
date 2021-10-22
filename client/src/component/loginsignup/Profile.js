@@ -1,7 +1,13 @@
 import React, { useState } from "react";
-const Profile = () => {
-    const [profile, setProfile] = useState();
+import { Link, useHistory } from "react-router-dom";
 
+const Profile = () => {
+    let history = useHistory();
+    if (!localStorage.getItem("token")) {
+        history.push("/");
+    }
+
+    const [profile, setProfile] = useState();
     const getLocation = async (e) => {
         e.preventDefault();
         try {
@@ -9,27 +15,17 @@ const Profile = () => {
                 var options = {
                     enableHighAccuracy: true,
                     timeout: 5000,
-                    maximumAge: 0,
+                    maximumAge: 1000,
                 };
                 function error(err) {
                     console.warn(`ERROR(${err.code}): ${err.message}`);
                 }
-                await navigator.geolocation.getCurrentPosition(
+                navigator.geolocation.getCurrentPosition(
                     async (pos) => {
-                        var crd = pos.coords;
-                        setProfile(crd);
-
-                        const location = await fetch(
-                            "http://localhost:5000/api/location",
-                            {
-                                method: "POST",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                },
-                                body: JSON.stringify(profile),
-                            }
-                        );
-                        console.log(location);
+                        var longitude = pos.coords.longitude;
+                        var latitude = pos.coords.latitude;
+                        console.log({ longitude, latitude });
+                        setProfile({ longitude, latitude });
                     },
                     error,
                     options
@@ -37,7 +33,23 @@ const Profile = () => {
             } else {
                 return setProfile("Location is not supported in your browser");
             }
-            return console.log(profile);
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    const sendData = async (e) => {
+        e.preventDefault();
+        try {
+            const location = await fetch("http://localhost:5000/api/location", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(profile),
+            });
+
+            console.log(location);
         } catch (err) {
             console.log(err);
         }
@@ -111,6 +123,7 @@ const Profile = () => {
                                                 type="submit"
                                                 className="btn btn-primary form-control"
                                                 value="Upload"
+                                                onClick={sendData}
                                             ></input>
                                         </div>
                                     </form>
