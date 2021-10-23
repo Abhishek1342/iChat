@@ -55,6 +55,17 @@ const Profile = () => {
         }
     };
 
+    var loadFile = function (event) {
+        var image = document.getElementById("output");
+        const buttonFileUpload = document.getElementById("buttonFileUpload");
+        if (event.target.files[0] || event.target.file) {
+            buttonFileUpload.style.display = "none";
+            image.style.display = "block";
+            image.src = URL.createObjectURL(event.target.files[0]);
+        }
+        console.log(event.target.files[0]);
+    };
+
     return (
         <>
             <div className="container">
@@ -68,9 +79,27 @@ const Profile = () => {
                                         <div className="form-group">
                                             <div className="image-upload">
                                                 <label htmlFor="file-input">
-                                                    <span className="upload-file-btn">
+                                                    <span
+                                                        className="upload-file-btn"
+                                                        id="buttonFileUpload"
+                                                    >
                                                         +
                                                     </span>
+                                                    <img
+                                                        id="output"
+                                                        width="120px"
+                                                        height="120px"
+                                                        alt="image"
+                                                        title="Click to change picture"
+                                                        style={{
+                                                            display: "none",
+                                                            objectFit: "cover",
+                                                            borderRadius: "8px",
+                                                            transition:
+                                                                "all 0.3s ease",
+                                                            cursor: "pointer",
+                                                        }}
+                                                    />
                                                 </label>
                                                 <input
                                                     id="file-input"
@@ -78,6 +107,7 @@ const Profile = () => {
                                                     accept="image/*"
                                                     size="2000000"
                                                     name="profileImage"
+                                                    onChange={loadFile}
                                                 />
                                             </div>
                                         </div>
