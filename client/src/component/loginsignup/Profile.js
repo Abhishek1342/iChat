@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const Profile = () => {
     let history = useHistory();
@@ -75,7 +75,10 @@ const Profile = () => {
                             <div className="offset-md-4 col-md-4">
                                 <div className="signup">
                                     <div className="login-head">Profile</div>
-                                    <form className="from">
+                                    <form
+                                        className="from"
+                                        enctype="multipart/form-data"
+                                    >
                                         <div className="form-group">
                                             <div className="image-upload">
                                                 <label htmlFor="file-input">
@@ -89,7 +92,7 @@ const Profile = () => {
                                                         id="output"
                                                         width="120px"
                                                         height="120px"
-                                                        alt="image"
+                                                        alt="profile"
                                                         title="Click to change picture"
                                                         style={{
                                                             display: "none",

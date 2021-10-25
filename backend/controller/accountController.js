@@ -120,7 +120,6 @@ exports.setProfile = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ success, err: errors.array() });
     }
-    const { name, age, gender } = req.body;
-    console.log(name, age, gender);
-    res.json({ msg: { name, age, gender } });
+    const { name, age, gender, location } = req.body;
+    res.json({ msg: { name, age, gender, location } });
 };
