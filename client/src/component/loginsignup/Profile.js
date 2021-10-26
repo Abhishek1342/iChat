@@ -8,6 +8,26 @@ const Profile = () => {
     }
 
     const [profile, setProfile] = useState();
+    const [file, setFile] = useState();
+
+    const loadFile = function (event) {
+        var image = document.getElementById("output");
+        const buttonFileUpload = document.getElementById("buttonFileUpload");
+        if (event.target.files[0] || event.target.file) {
+            setFile(event.target.files[0]);
+            console.log(file);
+            buttonFileUpload.style.display = "none";
+            image.style.display = "block";
+            image.src = URL.createObjectURL(event.target.files[0]);
+        }
+    };
+    const onchange = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+
+        setProfile({ ...profile, [name]: value });
+    };
+
     const getLocation = async (e) => {
         e.preventDefault();
         try {
@@ -24,8 +44,8 @@ const Profile = () => {
                     async (pos) => {
                         var longitude = pos.coords.longitude;
                         var latitude = pos.coords.latitude;
-                        console.log({ longitude, latitude });
-                        setProfile({ longitude, latitude });
+                        const position = { longitude, latitude };
+                        setProfile({ ...profile, position });
                     },
                     error,
                     options
@@ -40,30 +60,30 @@ const Profile = () => {
 
     const sendData = async (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        if (!File) {
+            return { message: "File not submitted!" };
+        }
+        formData.append("profile", profile);
+        formData.append("profileImage", file);
+        console.log(formData);
+
         try {
-            const location = await fetch("http://localhost:5000/api/location", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(profile),
-            });
+            const location = await fetch(
+                "http://localhost:5000/api/set-profile",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: formData,
+                }
+            );
 
             console.log(location);
         } catch (err) {
             console.log(err);
         }
-    };
-
-    var loadFile = function (event) {
-        var image = document.getElementById("output");
-        const buttonFileUpload = document.getElementById("buttonFileUpload");
-        if (event.target.files[0] || event.target.file) {
-            buttonFileUpload.style.display = "none";
-            image.style.display = "block";
-            image.src = URL.createObjectURL(event.target.files[0]);
-        }
-        console.log(event.target.files[0]);
     };
 
     return (
@@ -77,7 +97,7 @@ const Profile = () => {
                                     <div className="login-head">Profile</div>
                                     <form
                                         className="from"
-                                        enctype="multipart/form-data"
+                                        encType="multipart/form-data"
                                     >
                                         <div className="form-group">
                                             <div className="image-upload">
@@ -108,7 +128,6 @@ const Profile = () => {
                                                     id="file-input"
                                                     type="file"
                                                     accept="image/*"
-                                                    size="2000000"
                                                     name="profileImage"
                                                     onChange={loadFile}
                                                 />
@@ -120,6 +139,7 @@ const Profile = () => {
                                                 placeholder="Name"
                                                 className="form-control"
                                                 name="name"
+                                                onChange={onchange}
                                             ></input>
                                         </div>
                                         <div className="form-group">
@@ -130,13 +150,18 @@ const Profile = () => {
                                                 name="age"
                                                 min="1"
                                                 max="100"
+                                                onChange={onchange}
                                             ></input>
                                         </div>
                                         <div className="form-group">
                                             <select
                                                 className="form-select"
                                                 name="gender"
+                                                onChange={onchange}
                                             >
+                                                <option value="0">
+                                                    Select Gender
+                                                </option>
                                                 <option>Male</option>
                                                 <option>Female</option>
                                                 <option>Others</option>
@@ -144,7 +169,7 @@ const Profile = () => {
                                         </div>
                                         <div className="form-group signupbtn">
                                             <input
-                                                type="submit"
+                                                type="button"
                                                 className="btn btn-primary form-control"
                                                 value="Location"
                                                 name="location"
