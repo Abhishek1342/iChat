@@ -32,6 +32,9 @@ const Profile = () => {
         e.preventDefault();
         try {
             if (navigator.geolocation) {
+                e.target.innerHTML = "Getting location";
+                e.target.disabled = true;
+                document.getElementById("submitProfile").disabled = true;
                 var options = {
                     enableHighAccuracy: true,
                     timeout: 5000,
@@ -46,6 +49,11 @@ const Profile = () => {
                         var latitude = pos.coords.latitude;
                         const position = { longitude, latitude };
                         setProfile({ ...profile, position });
+                        e.target.innerHTML = "Got location";
+                        e.target.disabled = false;
+                        document.getElementById(
+                            "submitProfile"
+                        ).disabled = false;
                     },
                     error,
                     options
@@ -60,27 +68,37 @@ const Profile = () => {
 
     const sendData = async (e) => {
         e.preventDefault();
+        e.target.innerHTML = "Submitting...";
         const formData = new FormData();
-        if (!File) {
-            return { message: "File not submitted!" };
+
+        if (
+            !profile.name ||
+            !profile.age ||
+            profile.gender === 0 ||
+            !profile.gender
+        ) {
+            return alert("Fill all fields");
         }
-        formData.append("profile", profile);
+        if (!file) {
+            return alert("Select profile Image");
+        }
+        formData.append("name", profile.name);
+        formData.append("age", profile.age);
+        formData.append("gender", profile.gender);
+        formData.append("position", profile.position);
         formData.append("profileImage", file);
-        console.log(formData);
 
         try {
-            const location = await fetch(
-                "http://localhost:5000/api/set-profile",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: formData,
-                }
-            );
+            const res = await fetch("http://localhost:5000/api/set-profile", {
+                method: "post",
+                headers: {
+                    "auth-token": `Bearer ${localStorage.getItem("token")}`, //the token is a variable which holds the token
+                },
+                body: formData,
+            });
 
-            console.log(location);
+            console.log(res);
+            e.target.innerHTML = "Submitted";
         } catch (err) {
             console.log(err);
         }
@@ -168,21 +186,24 @@ const Profile = () => {
                                             </select>
                                         </div>
                                         <div className="form-group signupbtn">
-                                            <input
+                                            <button
                                                 type="button"
                                                 className="btn btn-primary form-control"
-                                                value="Location"
                                                 name="location"
                                                 onClick={getLocation}
-                                            ></input>
+                                            >
+                                                Location
+                                            </button>
                                         </div>
                                         <div className="form-group">
-                                            <input
+                                            <button
                                                 type="submit"
                                                 className="btn btn-primary form-control"
-                                                value="Upload"
                                                 onClick={sendData}
-                                            ></input>
+                                                id="submitProfile"
+                                            >
+                                                Submit Profile
+                                            </button>
                                         </div>
                                     </form>
                                 </div>

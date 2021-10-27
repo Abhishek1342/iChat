@@ -121,7 +121,9 @@ exports.setProfile = async (req, res) => {
         return res.status(400).json({ success, err: errors.array() });
     }
     const { name, age, gender, position } = req.body;
-    const image = req.file;
-    console.log(image);
-    res.json({ msg: { name, age, gender, position } });
+    const profileImage = req.file;
+    const header = req.header("auth-token");
+    console.log(header);
+    console.log(name, age, gender, position);
+    res.json({ msg: "hi" });
 };
