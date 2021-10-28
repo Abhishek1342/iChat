@@ -1,6 +1,7 @@
 import React from "react";
 import "./commonStyle.css";
 import profile from "../../../media/profile.webp";
+import { useHistory } from "react-router-dom";
 
 //material ui components ------------------------------
 
@@ -29,7 +30,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 //#######################################################
+
 const HeaderLeft = () => {
+    const history = useHistory();
     const classes = useStyles();
     // material ui states -------------------------------------
 
@@ -47,7 +50,10 @@ const HeaderLeft = () => {
 
         setOpen(false);
     };
-
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        history.push("/");
+    };
     function handleListKeyDown(event) {
         if (event.key === "Tab") {
             event.preventDefault();
@@ -139,7 +145,7 @@ const HeaderLeft = () => {
                                             <i className="fas fa-user-circle iconColor me-3"></i>
                                             My account
                                         </MenuItem>
-                                        <MenuItem onClick={handleClose}>
+                                        <MenuItem onClick={handleLogout}>
                                             <i className="fas fa-sign-out-alt iconColor me-3"></i>
                                             Logout
                                         </MenuItem>

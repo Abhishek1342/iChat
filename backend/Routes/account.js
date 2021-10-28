@@ -48,6 +48,7 @@ router.post(
 
 router.post(
     "/set-profile",
+    authUser,
     [
         body("name", "Invalid Name")
             .not()

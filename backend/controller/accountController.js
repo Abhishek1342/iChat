@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
+const { Mongoose } = require("mongoose");
 require("../DB/DBConnection");
 const User = require("../model/user");
 // login function
@@ -120,10 +121,26 @@ exports.setProfile = async (req, res) => {
     if (!errors.isEmpty()) {
         return res.status(400).json({ success, err: errors.array() });
     }
-    const { name, age, gender, position } = req.body;
-    const profileImage = req.file;
-    const header = req.header("auth-token");
-    console.log(header);
-    console.log(name, age, gender, position);
-    res.json({ msg: "hi" });
+    try {
+        const { name, age, gender, longitude, latitude } = req.body;
+        const profileImage = req.file;
+        const user = await User.findById(req.user.id);
+        const updateUser = await user.updateMany({
+            name,
+            age,
+            gender,
+            longitude,
+            latitude,
+            profileImage: profileImage.filename,
+            profileCompleted: true,
+        });
+        success = true;
+        res.status(200).json({
+            success,
+            msg: "Profile submitted successfully",
+        });
+    } catch (error) {
+        console.log(err);
+        return res.status(500).json({ err: "Server error" });
+    }
 };

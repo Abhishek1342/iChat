@@ -27,8 +27,14 @@ const userSchema = new mongoose.Schema({
     profileImage: {
         type: String,
     },
-    location: {
+    longitude: {
         type: String,
+    },
+    latitude: {
+        type: String,
+    },
+    profileCompleted: {
+        type: Boolean,
     },
     date: {
         type: Date,

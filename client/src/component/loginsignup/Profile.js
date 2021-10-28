@@ -47,8 +47,7 @@ const Profile = () => {
                     async (pos) => {
                         var longitude = pos.coords.longitude;
                         var latitude = pos.coords.latitude;
-                        const position = { longitude, latitude };
-                        setProfile({ ...profile, position });
+                        setProfile({ ...profile, longitude, latitude });
                         e.target.innerHTML = "Got location";
                         e.target.disabled = false;
                         document.getElementById(
@@ -85,14 +84,15 @@ const Profile = () => {
         formData.append("name", profile.name);
         formData.append("age", profile.age);
         formData.append("gender", profile.gender);
-        formData.append("position", profile.position);
+        formData.append("longitude", profile.longitude);
+        formData.append("latitude", profile.latitude);
         formData.append("profileImage", file);
 
         try {
             const res = await fetch("http://localhost:5000/api/set-profile", {
                 method: "post",
                 headers: {
-                    "auth-token": `Bearer ${localStorage.getItem("token")}`, //the token is a variable which holds the token
+                    "auth-token": localStorage.getItem("token"), //the token is a variable which holds the token
                 },
                 body: formData,
             });
