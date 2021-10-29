@@ -9,12 +9,12 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json());
 app.use(cors());
 
+app.use("/Images", express.static(path.join("Images")));
 env.config({ path: path.resolve(__dirname, "./.env") });
 require("./DB/DBConnection");
-
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "Images/");
+        cb(null, "./Images");
     },
     filename: function (req, file, cb) {
         cb(null, Date.now() + "-" + file.originalname);

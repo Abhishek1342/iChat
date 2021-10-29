@@ -125,7 +125,7 @@ exports.setProfile = async (req, res) => {
         const { name, age, gender, longitude, latitude } = req.body;
         const profileImage = req.file;
         const user = await User.findById(req.user.id);
-        const updateUser = await user.updateMany({
+        const updateUser = await user.updateOne({
             name,
             age,
             gender,
@@ -140,7 +140,23 @@ exports.setProfile = async (req, res) => {
             msg: "Profile submitted successfully",
         });
     } catch (error) {
-        console.log(err);
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+exports.currentUser = async (req, res) => {
+    let success = false;
+    try {
+        const userID = req.user.id;
+        const user = await User.findById(userID);
+        if (user) {
+            success = true;
+        }
+        console.log(user);
+        res.status(200).json({ success, user, msg: "user fetched" });
+    } catch (error) {
+        console.log(error);
         return res.status(500).json({ err: "Server error" });
     }
 };

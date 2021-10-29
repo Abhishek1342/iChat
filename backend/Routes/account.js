@@ -69,4 +69,6 @@ router.post(
     accountController.setProfile
 );
 
+router.get("/currentuser", authUser, accountController.currentUser);
+
 module.exports = router;

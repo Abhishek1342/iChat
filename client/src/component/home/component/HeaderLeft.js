@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./commonStyle.css";
-import profile from "../../../media/profile.webp";
+// import profile from "";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
 
 //material ui components ------------------------------
 
@@ -34,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
 const HeaderLeft = () => {
     const history = useHistory();
     const classes = useStyles();
+
     // material ui states -------------------------------------
 
     const [open, setOpen] = React.useState(false);
@@ -95,10 +97,28 @@ const HeaderLeft = () => {
         }
     }, [openDialog]);
 
+    const [fetchedUser, setFetchedUser] = useState();
+    const fetchUser = async () => {
+        const token = localStorage.getItem("token");
+        try {
+            const res = await axios("http://localhost:5000/api/currentuser", {
+                headers: { "auth-token": token },
+            });
+            if (res.data.success === true) {
+                setFetchedUser({ currentUser: res.data.user });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        fetchUser();
+    }, []);
+
     return (
         <div className="headerContainer">
             <img
-                src={profile}
+                src="http://localhost:5000/Images/1635524771073-%E2%80%94Pngtree%E2%80%94movie%20clip%20art%20cartoon%20camera_5862048.png"
                 className="userProfileImageHeader"
                 alt="profile"
             />
@@ -168,18 +188,18 @@ const HeaderLeft = () => {
                 aria-labelledby="scroll-dialog-title"
                 aria-describedby="scroll-dialog-description"
             >
-                <DialogTitle id="scroll-dialog-title">Subscribe</DialogTitle>
+                <DialogTitle id="scroll-dialog-title">Notification</DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
                     <div className="notificationContainer">
                         <div className="notificationDetail">
                             <img
                                 className="userProfileImageHeader"
-                                src={profile}
+                                src="http://localhost:5000/Images/1635524771073-%E2%80%94Pngtree%E2%80%94movie%20clip%20art%20cartoon%20camera_5862048.png"
                                 alt="profile"
                             />
 
                             <h5 className="notificationName">
-                                Abhishek Kumar{" "}
+                                {fetchedUser?.currentUser?.age}
                             </h5>
                             <p className="notificationType">
                                 sent you friend request
