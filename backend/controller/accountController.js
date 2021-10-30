@@ -123,7 +123,12 @@ exports.setProfile = async (req, res) => {
     }
     try {
         const { name, age, gender, longitude, latitude } = req.body;
-        const profileImage = req.file;
+        const url = req.protocol + "://" + req.get("host");
+        let profileImage = "";
+        const file = req.file;
+        if (file) {
+            profileImage = url + "/images/" + file.filename;
+        }
         const user = await User.findById(req.user.id);
         const updateUser = await user.updateOne({
             name,
@@ -131,7 +136,7 @@ exports.setProfile = async (req, res) => {
             gender,
             longitude,
             latitude,
-            profileImage: profileImage.filename,
+            profileImage,
             profileCompleted: true,
         });
         success = true;
@@ -153,7 +158,6 @@ exports.currentUser = async (req, res) => {
         if (user) {
             success = true;
         }
-        console.log(user);
         res.status(200).json({ success, user, msg: "user fetched" });
     } catch (error) {
         console.log(error);

@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
+import axios from "axios";
+
+const baseUrl = "http://localhost:5000";
+const token = localStorage.getItem("token");
 
 const Profile = () => {
     let history = useHistory();
-    if (!localStorage.getItem("token")) {
+    if (!token) {
         history.push("/");
     }
 
@@ -89,16 +93,19 @@ const Profile = () => {
         formData.append("profileImage", file);
 
         try {
-            const res = await fetch("http://localhost:5000/api/set-profile", {
-                method: "post",
-                headers: {
-                    "auth-token": localStorage.getItem("token"), //the token is a variable which holds the token
-                },
-                body: formData,
-            });
+            const res = await axios.post(
+                `${baseUrl}/api/set-profile`,
 
-            console.log(res);
-            e.target.innerHTML = "Submitted";
+                formData,
+                {
+                    headers: {
+                        "auth-token": token, //the token is a variable which holds the token
+                    },
+                }
+            );
+            if (res.data.success) {
+                history.push("/home");
+            }
         } catch (err) {
             console.log(err);
         }

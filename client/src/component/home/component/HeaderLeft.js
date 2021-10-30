@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
 //#######################################################
 
 const HeaderLeft = () => {
+    const baseUrl = "http://localhost:5000";
+    const token = localStorage.getItem("token");
+
     const history = useHistory();
     const classes = useStyles();
 
@@ -99,9 +102,8 @@ const HeaderLeft = () => {
 
     const [fetchedUser, setFetchedUser] = useState();
     const fetchUser = async () => {
-        const token = localStorage.getItem("token");
         try {
-            const res = await axios("http://localhost:5000/api/currentuser", {
+            const res = await axios(`${baseUrl}/api/currentuser`, {
                 headers: { "auth-token": token },
             });
             if (res.data.success === true) {
@@ -113,12 +115,12 @@ const HeaderLeft = () => {
     };
     useEffect(() => {
         fetchUser();
-    }, []);
+    });
 
     return (
         <div className="headerContainer">
             <img
-                src="http://localhost:5000/Images/1635524771073-%E2%80%94Pngtree%E2%80%94movie%20clip%20art%20cartoon%20camera_5862048.png"
+                src={fetchedUser?.currentUser?.profileImage}
                 className="userProfileImageHeader"
                 alt="profile"
             />
@@ -194,12 +196,12 @@ const HeaderLeft = () => {
                         <div className="notificationDetail">
                             <img
                                 className="userProfileImageHeader"
-                                src="http://localhost:5000/Images/1635524771073-%E2%80%94Pngtree%E2%80%94movie%20clip%20art%20cartoon%20camera_5862048.png"
+                                src={fetchedUser?.currentUser?.profileImage}
                                 alt="profile"
                             />
 
                             <h5 className="notificationName">
-                                {fetchedUser?.currentUser?.age}
+                                {fetchedUser?.currentUser?.name}
                             </h5>
                             <p className="notificationType">
                                 sent you friend request

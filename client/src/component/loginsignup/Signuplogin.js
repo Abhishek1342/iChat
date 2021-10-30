@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import "./loginsignup.css";
 const Signuplogin = () => {
+    const baseUrl = "http://localhost:5000";
+
     let history = useHistory();
 
     const [login, setLogin] = useState({
@@ -31,7 +33,7 @@ const Signuplogin = () => {
     const submitLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch("http://localhost:5000/api/login", {
+            const res = await fetch(`${baseUrl}/api/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -57,7 +59,7 @@ const Signuplogin = () => {
     const submitSignup = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch("http://localhost:5000/api/signup", {
+            const res = await fetch(`${baseUrl}/api/signup`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
