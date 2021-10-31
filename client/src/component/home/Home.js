@@ -1,7 +1,6 @@
 import React from "react";
 import ChatSection from "./component/ChatSection";
 import HeaderLeft from "./component/HeaderLeft";
-import HeaderRight from "./component/HeaderRight";
 import UserListPannel from "./component/UserListPannel";
 import { useHistory } from "react-router-dom";
 
@@ -15,13 +14,6 @@ const Home = () => {
             <div className="row">
                 <div className="col-3">
                     <HeaderLeft />
-                </div>
-                <div className="col-9">
-                    <HeaderRight />
-                </div>
-            </div>
-            <div className="row">
-                <div className="col-3">
                     <UserListPannel />
                 </div>
                 <div className="col-9">

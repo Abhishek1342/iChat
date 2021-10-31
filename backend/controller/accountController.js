@@ -1,7 +1,6 @@
 const bcrypt = require("bcryptjs");
 const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
-const { Mongoose } = require("mongoose");
 require("../DB/DBConnection");
 const User = require("../model/user");
 // login function
@@ -159,6 +158,23 @@ exports.currentUser = async (req, res) => {
             success = true;
         }
         res.status(200).json({ success, user, msg: "user fetched" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+exports.searchUser = async (req, res) => {
+    let success = false;
+    try {
+        const search = req.body.search;
+        const user = await User.find({ name: { $regex: search } });
+        if (user) {
+            success = true;
+            res.status(200).json({ user, success, msg: "user found" });
+        } else {
+            res.status(404).json({ success, msg: "user not found" });
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json({ err: "Server error" });

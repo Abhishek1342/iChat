@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import profile from "../../../media/profile.webp";
+import axios from "axios";
 //material ui components -----------------------------------------
 
 import PropTypes from "prop-types";
@@ -12,9 +13,11 @@ import {
 import AppBar from "@material-ui/core/AppBar";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import SearchUser from "./SearchUser";
 
 //################################################################
+
+const baseUrl = "http://localhost:5000";
+const token = localStorage.getItem("token");
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -65,6 +68,32 @@ const useStyles = makeStyles((theme) => ({
 //################################################################
 
 const UserListPannel = () => {
+    const [searchTerm, setSearchTerm] = useState({ search: "" });
+    const [searchResult, setSearchResult] = useState([]);
+    const onChangeSearch = (e) => {
+        let searchValue = e.target.value;
+        setSearchTerm({ search: searchValue });
+    };
+
+    useEffect(() => {
+        const searchUser = async () => {
+            try {
+                const people = await axios.post(
+                    `${baseUrl}/api/searchuser`,
+                    searchTerm,
+                    {
+                        headers: { "auth-token": token },
+                    }
+                );
+                setSearchResult(people.data.user);
+                // console.log(searchResult);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        searchUser();
+    }, [searchTerm]);
+
     //material ui states -----------------------------------------
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
@@ -95,7 +124,16 @@ const UserListPannel = () => {
                             <Tab label="Find Friends" {...a11yProps(1)} />
                         </Tabs>
                     </AppBar>
-                    <SearchUser />
+                    <div className="searchContainer">
+                        <input
+                            className="searchBox"
+                            type="text"
+                            placeholder="Search Friend"
+                            name="search"
+                            value={searchTerm.search}
+                            onChange={onChangeSearch}
+                        />
+                    </div>
                     <SwipeableViews
                         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
                         index={value}
@@ -103,40 +141,49 @@ const UserListPannel = () => {
                     >
                         <TabPanel value={value} index={0} dir={theme.direction}>
                             <div className="userListContainer">
-                                <div className="userListCard">
-                                    <img
-                                        src={profile}
-                                        className="userProfileImage"
-                                        alt="user profile"
-                                    />
-                                    <span className="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
-                                        <span className="visually-hidden">
-                                            New alerts
-                                        </span>
-                                    </span>
-                                    <div className="userDetailContainer">
-                                        <div className="userNameandMessage">
-                                            <h4 className="usersNameHeading">
-                                                Abhishek kumar
-                                            </h4>
-                                            <p className="userMessageAndTime userMessage text-truncate">
-                                                Message sdfkhkjd fshkfsdf
-                                                hdfsdfkd dsfhbksdfh dsfhksdh
-                                            </p>
-                                        </div>
-                                        <div className="MessageTimeAndCount">
-                                            <p className="userMessageAndTime">
-                                                13:40
-                                            </p>
-                                            <span className="mt-1 badge bg-success">
-                                                99
+                                {searchResult.map((item) => {
+                                    console.log(item);
+                                    return (
+                                        <div
+                                            className="userListCard"
+                                            key={item._id}
+                                        >
+                                            <img
+                                                src={profile}
+                                                className="userProfileImage"
+                                                alt="user profile"
+                                            />
+                                            <span className="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
                                                 <span className="visually-hidden">
-                                                    unread messages
+                                                    New alerts
                                                 </span>
                                             </span>
+                                            <div className="userDetailContainer">
+                                                <div className="userNameandMessage">
+                                                    <h4 className="usersNameHeading">
+                                                        {item.name}
+                                                    </h4>
+                                                    <p className="userMessageAndTime userMessage text-truncate">
+                                                        Message sdfkhkjd
+                                                        fshkfsdf hdfsdfkd
+                                                        dsfhbksdfh dsfhksdh
+                                                    </p>
+                                                </div>
+                                                <div className="MessageTimeAndCount">
+                                                    <p className="userMessageAndTime">
+                                                        13:40
+                                                    </p>
+                                                    <span className="mt-1 badge bg-success">
+                                                        99
+                                                        <span className="visually-hidden">
+                                                            unread messages
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
+                                    );
+                                })}
                             </div>
                         </TabPanel>
                         <TabPanel value={value} index={1} dir={theme.direction}>

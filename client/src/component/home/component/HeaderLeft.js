@@ -115,7 +115,7 @@ const HeaderLeft = () => {
     };
     useEffect(() => {
         fetchUser();
-    });
+    }, []);
 
     return (
         <div className="headerContainer">

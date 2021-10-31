@@ -1,10 +1,8 @@
 const express = require("express");
 const { body } = require("express-validator");
-const User = require("../model/user");
 const router = express.Router();
 const authUser = require("../middleware/auth");
 const accountController = require("../controller/accountController");
-const { Router } = require("express");
 
 // ROUTE 1 : FOR USER TO LOGIN
 // METHOD : POST
@@ -20,7 +18,7 @@ router.post(
     accountController.loginUser
 );
 
-// ROUTE 1 : FOR USER TO SIGNUP ACCOUNT
+// ROUTE 2 : FOR USER TO SIGNUP ACCOUNT
 // METHOD : POST
 // ENDPOINT : http://localhost:5000/api/signup
 //NO AUTHENTICATION REQUIRED
@@ -41,7 +39,7 @@ router.post(
     ],
     accountController.signupUser
 );
-// ROUTE 1 : FOR USER TO ENTER THERE PROFILE DETAILS
+// ROUTE 3 : FOR USER TO ENTER THERE PROFILE DETAILS
 // METHOD : POST
 // ENDPOINT : http://localhost:5000/api/setprofile
 // AUTHENTICATION REQUIRED
@@ -67,6 +65,18 @@ router.post(
             .isLength({ min: 4, max: 6 }),
     ],
     accountController.setProfile
+);
+
+// ROUTE 4 : FOR USER TO    SEARCH DIFFERENT FRIENDS
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/searchuser
+// AUTHENTICATION REQUIRED
+
+router.post(
+    "/searchuser",
+    authUser,
+
+    accountController.searchUser
 );
 
 router.get("/currentuser", authUser, accountController.currentUser);
