@@ -110,8 +110,8 @@
     border: 1px solid var(--lighttext);
 }
 .activeStatus {
-    top: 50px;
-    left: 60px;
+    top: 15px;
+    left: -10px;
     padding: 10px;
 }
 

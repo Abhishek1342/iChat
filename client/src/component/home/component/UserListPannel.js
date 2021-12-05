@@ -107,6 +107,10 @@ const UserListPannel = () => {
     };
     //################################################################
 
+    const clickedOnAddFriend = (id) => {
+        console.log(id);
+    };
+
     return (
         <div className="usersContainer">
             <ThemeProvider theme={theme}>
@@ -124,25 +128,25 @@ const UserListPannel = () => {
                             <Tab label="Find Friends" {...a11yProps(1)} />
                         </Tabs>
                     </AppBar>
-                    <div className="searchContainer">
-                        <input
-                            className="searchBox"
-                            type="text"
-                            placeholder="Search Friend"
-                            name="search"
-                            value={searchTerm.search}
-                            onChange={onChangeSearch}
-                        />
-                    </div>
+
                     <SwipeableViews
                         axis={theme.direction === "rtl" ? "x-reverse" : "x"}
                         index={value}
                         onChangeIndex={handleChangeIndex}
                     >
                         <TabPanel value={value} index={0} dir={theme.direction}>
+                            <div className="searchContainer">
+                                <input
+                                    className="searchBox"
+                                    type="text"
+                                    placeholder="Search Friend"
+                                    name="search"
+                                    value={searchTerm.search}
+                                    onChange={onChangeSearch}
+                                />
+                            </div>
                             <div className="userListContainer">
                                 {searchResult.map((item) => {
-                                    console.log(item);
                                     return (
                                         <div
                                             className="userListCard"
@@ -153,7 +157,7 @@ const UserListPannel = () => {
                                                 className="userProfileImage"
                                                 alt="user profile"
                                             />
-                                            <span className="position-absolute top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
+                                            <span className="position-relative top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
                                                 <span className="visually-hidden">
                                                     New alerts
                                                 </span>
@@ -187,32 +191,54 @@ const UserListPannel = () => {
                             </div>
                         </TabPanel>
                         <TabPanel value={value} index={1} dir={theme.direction}>
+                            <div className="searchContainer">
+                                <input
+                                    className="searchBox"
+                                    type="text"
+                                    placeholder="Search Friend"
+                                    name="global user search"
+                                    value={searchTerm.search}
+                                    onChange={onChangeSearch}
+                                />
+                            </div>
                             <h5 className="peopleAroundYou">
                                 People around you
                             </h5>
                             <div className="FriendListContainer">
-                                <div className="userListCard">
-                                    <img
-                                        src={profile}
-                                        className="userProfileImage"
-                                        alt="user profile"
-                                    />
-                                    <div className="userDetailContainer">
-                                        <div className="userNameandMessage">
-                                            <h4 className="usersNameHeading findFriendUsersName">
-                                                Abhishek kumar
-                                            </h4>
+                                {searchResult.map((item) => {
+                                    return (
+                                        <div
+                                            className="userListCard"
+                                            key={item._id}
+                                        >
+                                            <img
+                                                src={item.profileImage}
+                                                className="userProfileImage"
+                                                alt="user profile"
+                                            />
+                                            <div className="userDetailContainer">
+                                                <div className="userNameandMessage">
+                                                    <h4 className="usersNameHeading findFriendUsersName">
+                                                        {item.name}
+                                                    </h4>
+                                                </div>
+                                                <div className="MessageTimeAndCount">
+                                                    <button
+                                                        type="button"
+                                                        className="btn btn-primary"
+                                                        onClick={() => {
+                                                            clickedOnAddFriend(
+                                                                item._id
+                                                            );
+                                                        }}
+                                                    >
+                                                        Add Friend
+                                                    </button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="MessageTimeAndCount">
-                                            <button
-                                                type="button"
-                                                className="btn btn-primary"
-                                            >
-                                                Add Friend
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                                    );
+                                })}
                             </div>
                         </TabPanel>
                     </SwipeableViews>

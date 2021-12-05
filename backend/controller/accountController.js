@@ -156,8 +156,10 @@ exports.currentUser = async (req, res) => {
         const user = await User.findById(userID);
         if (user) {
             success = true;
+            res.status(200).json({ success, user, msg: "user fetched" });
+        } else {
+            res.status(404).json({ success, msg: "user not fetched" });
         }
-        res.status(200).json({ success, user, msg: "user fetched" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ err: "Server error" });
@@ -168,7 +170,10 @@ exports.searchUser = async (req, res) => {
     let success = false;
     try {
         const search = req.body.search;
-        const user = await User.find({ name: { $regex: search } });
+        const user = await User.find({ name: { $regex: search } })
+            .where("_id")
+            .ne(req.user.id)
+            .select(["-password"]);
         if (user) {
             success = true;
             res.status(200).json({ user, success, msg: "user found" });
