@@ -67,7 +67,7 @@ router.post(
     accountController.setProfile
 );
 
-// ROUTE 4 : FOR USER TO    SEARCH DIFFERENT FRIENDS
+// ROUTE 4 : FOR USER TO SEARCH GLOBAL USER LIST
 // METHOD : POST
 // ENDPOINT : http://localhost:5000/api/searchuser
 // AUTHENTICATION REQUIRED
@@ -79,6 +79,13 @@ router.post(
     accountController.searchUser
 );
 
+// ROUTE 5 : TO GET CURRENT USER DETAILS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/currentuser
+// AUTHENTICATION REQUIRED
+
 router.get("/currentuser", authUser, accountController.currentUser);
+
+router.post("/friendrequest", authUser, accountController.friendRequest);
 
 module.exports = router;

@@ -3,6 +3,8 @@ const { validationResult } = require("express-validator");
 const jwt = require("jsonwebtoken");
 require("../DB/DBConnection");
 const User = require("../model/user");
+const FriendRequest = require("../model/friendRequests");
+
 // login function
 // METHOD : POST
 // ENDPOINT : http://localhost:5000/api/login
@@ -149,6 +151,11 @@ exports.setProfile = async (req, res) => {
     }
 };
 
+//  TO GET CURRENT USER DETAILS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/currentuser
+// AUTHENTICATION REQUIRED
+
 exports.currentUser = async (req, res) => {
     let success = false;
     try {
@@ -166,6 +173,11 @@ exports.currentUser = async (req, res) => {
     }
 };
 
+// ROUTE 4 : FOR USER TO SEARCH GLOBAL USER LIST
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/searchuser
+// AUTHENTICATION REQUIRED
+
 exports.searchUser = async (req, res) => {
     let success = false;
     try {
@@ -179,6 +191,46 @@ exports.searchUser = async (req, res) => {
             res.status(200).json({ user, success, msg: "user found" });
         } else {
             res.status(404).json({ success, msg: "user not found" });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+exports.friendRequest = async (req, res) => {
+    let success = false;
+    try {
+        const toUser = req.body.toUser;
+        const fromUser = req.user.id;
+        const existfriendRqust = await FriendRequest.find({
+            $or: [
+                { to: toUser, from: fromUser },
+                { to: fromUser, from: toUser },
+            ],
+        });
+        console.log(existfriendRqust);
+        if (toUser != fromUser) {
+            if (existfriendRqust.length > 0) {
+                success = false;
+                res.status(400).json({ msg: "Already sent friend request" });
+            } else {
+                const newFriendRequest = new FriendRequest({
+                    from: fromUser,
+                    to: toUser,
+                });
+                const friendRequest = await newFriendRequest.save();
+                sucess = true;
+                res.status(200).json({
+                    sucess,
+                    msg: "Successfuly sent friend request",
+                });
+            }
+        } else {
+            success = false;
+            res.status(400).json({
+                msg: "Can't send friend request to yourself",
+            });
         }
     } catch (error) {
         console.log(error);
