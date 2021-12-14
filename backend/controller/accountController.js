@@ -182,7 +182,9 @@ exports.searchUser = async (req, res) => {
     let success = false;
     try {
         const search = req.body.search;
-        const user = await User.find({ name: { $regex: search } })
+        const user = await User.find({
+            name: { $regex: search, $options: "i" },
+        })
             .where("_id")
             .ne(req.user.id)
             .select(["-password"]);
@@ -197,6 +199,11 @@ exports.searchUser = async (req, res) => {
         return res.status(500).json({ err: "Server error" });
     }
 };
+
+// ROUTE 5 : FOR USER TO SEND FRIEND REQUESTS
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/friendrequest
+// AUTHENTICATION REQUIRED
 
 exports.friendRequest = async (req, res) => {
     let success = false;
@@ -231,6 +238,33 @@ exports.friendRequest = async (req, res) => {
             res.status(400).json({
                 msg: "Can't send friend request to yourself",
             });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+// ROUTE 6 : FOR USER TO SEE AL FRIEND REQUESTS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/friendrequest
+// AUTHENTICATION REQUIRED
+
+exports.getAllFriendRequests = async (req, res) => {
+    let success = false;
+    try {
+        const user = req.user.id;
+        const foundRequests = await FriendRequest.find({ to: user });
+        console.log(foundRequests);
+        if (foundRequests.length > 0) {
+            success = true;
+            return res
+                .status(200)
+                .json({ success, foundRequests, msg: "Friend Request Found" });
+        } else {
+            return res
+                .status(400)
+                .json({ success, msg: "Friend Request Not Found" });
         }
     } catch (error) {
         console.log(error);

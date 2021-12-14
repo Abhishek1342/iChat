@@ -17,7 +17,7 @@ import Tab from "@material-ui/core/Tab";
 //################################################################
 
 const baseUrl = "http://localhost:5000";
-const token = localStorage.getItem("token");
+let token = localStorage.getItem("token");
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -86,13 +86,13 @@ const UserListPannel = () => {
                     }
                 );
                 setSearchResult(people.data.user);
-                // console.log(searchResult);
+                console.log(searchResult);
             } catch (err) {
                 console.log(err);
             }
         };
         searchUser();
-    }, [searchTerm]);
+    }, [token, searchTerm]);
 
     //material ui states -----------------------------------------
     const classes = useStyles();
@@ -107,8 +107,22 @@ const UserListPannel = () => {
     };
     //################################################################
 
-    const clickedOnAddFriend = (id) => {
-        console.log(id);
+    const sendFriendRequest = async (id) => {
+        try {
+            const toUser = { toUser: id };
+            const frindrequest = await axios.post(
+                `${baseUrl}/api/friendrequest`,
+                toUser,
+                {
+                    headers: {
+                        "auth-token": token,
+                    },
+                }
+            );
+            console.log(frindrequest);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -227,7 +241,7 @@ const UserListPannel = () => {
                                                         type="button"
                                                         className="btn btn-primary"
                                                         onClick={() => {
-                                                            clickedOnAddFriend(
+                                                            sendFriendRequest(
                                                                 item._id
                                                             );
                                                         }}

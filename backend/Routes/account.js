@@ -86,6 +86,18 @@ router.post(
 
 router.get("/currentuser", authUser, accountController.currentUser);
 
+// ROUTE 6 : FOR USER TO SEND FRIEND REQUESTS
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/friendrequest
+// AUTHENTICATION REQUIRED
+
 router.post("/friendrequest", authUser, accountController.friendRequest);
+
+// ROUTE 7 : FOR USER TO SEE ALL FRIEND REQUESTS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/friendrequest
+// AUTHENTICATION REQUIRED
+
+router.get("/friendrequest", authUser, accountController.getAllFriendRequests);
 
 module.exports = router;

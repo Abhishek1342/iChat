@@ -113,8 +113,22 @@ const HeaderLeft = () => {
             console.log(error);
         }
     };
+    const [friendRequest, setFriendRequest] = useState();
+    const friendRequests = async () => {
+        try {
+            const res = await axios(`${baseUrl}/api/friendrequest`, {
+                headers: { "auth-token": token },
+            });
+            if (res.data.success === true) {
+                setFriendRequest(res.data.foundRequests);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     useEffect(() => {
         fetchUser();
+        friendRequests();
     }, []);
 
     return (

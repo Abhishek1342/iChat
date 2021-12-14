@@ -42,11 +42,12 @@ const Signuplogin = () => {
             });
             const json = await res.json();
             if (!json) {
-                console.log("Something wnet wrong");
+                console.log("Something went wrong");
             }
             if (json.success === true) {
                 localStorage.setItem("token", json.authToken);
                 history.push("/home");
+                window.location.reload(); //just to remove a bug
             } else {
                 history.push("/");
                 setLogin({ usernameEmail: "", password: "" });
@@ -68,11 +69,12 @@ const Signuplogin = () => {
             });
             const json = await res.json();
             if (!json) {
-                console.log("Something wnet wrong");
+                console.log("Something went wrong");
             }
             if (json.success === true) {
                 localStorage.setItem("token", json.authToken);
                 history.push("/profile");
+                window.location.reload(); //just to remove a bug
             } else {
                 history.push("/");
                 setSignup({
