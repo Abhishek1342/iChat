@@ -206,30 +206,40 @@ const HeaderLeft = () => {
             >
                 <DialogTitle id="scroll-dialog-title">Notification</DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
-                    <div className="notificationContainer">
-                        <div className="notificationDetail">
-                            <img
-                                className="userProfileImageHeader"
-                                src={fetchedUser?.currentUser?.profileImage}
-                                alt="profile"
-                            />
+                    {/* {friendRequest.map((item) => {
+                        return (
+                            <div className="notificationContainer">
+                                <div className="notificationDetail">
+                                    <img
+                                        className="userProfileImageHeader"
+                                        src="https://media.istockphoto.com/photos/millennial-male-team-leader-organize-virtual-workshop-with-employees-picture-id1300972574?b=1&k=20&m=1300972574&s=170667a&w=0&h=2nBGC7tr0kWIU8zRQ3dMg-C5JLo9H2sNUuDjQ5mlYfo="
+                                        alt="profile"
+                                    />
 
-                            <h5 className="notificationName">
-                                {fetchedUser?.currentUser?.name}
-                            </h5>
-                            <p className="notificationType">
-                                sent you friend request
-                            </p>
-                        </div>
-                        <div>
-                            <button type="button" className="btn btn-danger">
-                                Cancle
-                            </button>
-                            <button type="button" className="btn btn-primary">
-                                Accept
-                            </button>
-                        </div>
-                    </div>
+                                    <h5 className="notificationName">
+                                        {fetchedUser?.currentUser?.name}
+                                    </h5>
+                                    <p className="notificationType">
+                                        sent you friend request
+                                    </p>
+                                </div>
+                                <div>
+                                    <button
+                                        type="button"
+                                        className="btn btn-danger"
+                                    >
+                                        Cancle
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-primary"
+                                    >
+                                        Accept
+                                    </button>
+                                </div>
+                            </div>
+                        );
+                    })} */}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog} color="primary">

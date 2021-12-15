@@ -255,12 +255,25 @@ exports.getAllFriendRequests = async (req, res) => {
     try {
         const user = req.user.id;
         const foundRequests = await FriendRequest.find({ to: user });
-        console.log(foundRequests);
+
         if (foundRequests.length > 0) {
-            success = true;
-            return res
-                .status(200)
-                .json({ success, foundRequests, msg: "Friend Request Found" });
+            const friendRequests = [];
+            foundRequests.map(async (user) => {
+                try {
+                    const friendRequestUser = await User.findById(user.from);
+                    success = true;
+                    friendRequests.push(friendRequestUser);
+                    console.log(friendRequests);
+                    return friendRequests;
+                } catch (error) {
+                    console.log(error);
+                }
+            });
+            res.status(200).json({
+                success,
+                friendRequests,
+                msg: "Friend Request Found",
+            });
         } else {
             return res
                 .status(400)
