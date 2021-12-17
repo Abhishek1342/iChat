@@ -113,14 +113,14 @@ const HeaderLeft = () => {
             console.log(error);
         }
     };
-    const [friendRequest, setFriendRequest] = useState();
+    const [friendRequest, setFriendRequest] = useState([]);
     const friendRequests = async () => {
         try {
             const res = await axios(`${baseUrl}/api/friendrequest`, {
                 headers: { "auth-token": token },
             });
             if (res.data.success === true) {
-                setFriendRequest(res.data.foundRequests);
+                setFriendRequest(res.data.friendRequests);
             }
         } catch (error) {
             console.log(error);
@@ -129,7 +129,7 @@ const HeaderLeft = () => {
     useEffect(() => {
         fetchUser();
         friendRequests();
-    }, []);
+    }, [open]);
 
     return (
         <div className="headerContainer">
@@ -206,18 +206,21 @@ const HeaderLeft = () => {
             >
                 <DialogTitle id="scroll-dialog-title">Notification</DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
-                    {/* {friendRequest.map((item) => {
+                    {friendRequest.map((item) => {
                         return (
-                            <div className="notificationContainer">
+                            <div
+                                className="notificationContainer"
+                                key={item._id}
+                            >
                                 <div className="notificationDetail">
                                     <img
                                         className="userProfileImageHeader"
-                                        src="https://media.istockphoto.com/photos/millennial-male-team-leader-organize-virtual-workshop-with-employees-picture-id1300972574?b=1&k=20&m=1300972574&s=170667a&w=0&h=2nBGC7tr0kWIU8zRQ3dMg-C5JLo9H2sNUuDjQ5mlYfo="
+                                        src={item.profileImage}
                                         alt="profile"
                                     />
 
                                     <h5 className="notificationName">
-                                        {fetchedUser?.currentUser?.name}
+                                        {item.name}
                                     </h5>
                                     <p className="notificationType">
                                         sent you friend request
@@ -228,7 +231,7 @@ const HeaderLeft = () => {
                                         type="button"
                                         className="btn btn-danger"
                                     >
-                                        Cancle
+                                        Cancel
                                     </button>
                                     <button
                                         type="button"
@@ -239,7 +242,7 @@ const HeaderLeft = () => {
                                 </div>
                             </div>
                         );
-                    })} */}
+                    })}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog} color="primary">

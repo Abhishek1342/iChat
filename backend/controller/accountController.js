@@ -258,17 +258,17 @@ exports.getAllFriendRequests = async (req, res) => {
 
         if (foundRequests.length > 0) {
             const friendRequests = [];
-            foundRequests.map(async (user) => {
+            for (let i = 0; i < foundRequests.length; i++) {
                 try {
-                    const friendRequestUser = await User.findById(user.from);
+                    const friendRequestUser = await User.findById(
+                        foundRequests[i]?.from
+                    );
                     success = true;
                     friendRequests.push(friendRequestUser);
-                    console.log(friendRequests);
-                    return friendRequests;
                 } catch (error) {
                     console.log(error);
                 }
-            });
+            }
             res.status(200).json({
                 success,
                 friendRequests,

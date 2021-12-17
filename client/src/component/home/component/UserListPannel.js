@@ -86,7 +86,6 @@ const UserListPannel = () => {
                     }
                 );
                 setSearchResult(people.data.user);
-                console.log(searchResult);
             } catch (err) {
                 console.log(err);
             }
@@ -119,7 +118,6 @@ const UserListPannel = () => {
                     },
                 }
             );
-            console.log(frindrequest);
         } catch (err) {
             console.log(err);
         }
