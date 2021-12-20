@@ -100,4 +100,11 @@ router.post("/friendrequest", authUser, accountController.friendRequest);
 
 router.get("/friendrequest", authUser, accountController.getAllFriendRequests);
 
+// ROUTE 8 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/filtereduser
+// AUTHENTICATION REQUIRED
+
+router.get("/filtereduser", authUser, accountController.filtereduser);
+
 module.exports = router;

@@ -245,7 +245,7 @@ exports.friendRequest = async (req, res) => {
     }
 };
 
-// ROUTE 6 : FOR USER TO SEE AL FRIEND REQUESTS
+// ROUTE 6 : FOR USER TO SEE ALL FRIEND REQUESTS
 // METHOD : GET
 // ENDPOINT : http://localhost:5000/api/friendrequest
 // AUTHENTICATION REQUIRED
@@ -279,6 +279,30 @@ exports.getAllFriendRequests = async (req, res) => {
                 .status(400)
                 .json({ success, msg: "Friend Request Not Found" });
         }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+// ROUTE 7 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/filtereduser
+// AUTHENTICATION REQUIRED
+
+exports.filtereduser = async (req, res) => {
+    try {
+        const user = req.user.id;
+        const filteredFriendRequests = await FriendRequest.find({
+            $or: [{ to: user }, { from: user }],
+        });
+        const filteredUser = [];
+
+        const allUser = await User.find().select(["-password"]);
+        allUser.map((item) => {
+            filteredFriendRequests.map((request) => {});
+        });
+        console.log(allUser);
     } catch (error) {
         console.log(error);
         return res.status(500).json({ err: "Server error" });
