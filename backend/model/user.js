@@ -35,7 +35,13 @@ const userSchema = new mongoose.Schema({
     },
     profileCompleted: {
         type: Boolean,
+        default: false,
     },
+    friend: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+        },
+    ],
     date: {
         type: Date,
         default: Date.now,

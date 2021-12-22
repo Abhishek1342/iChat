@@ -285,7 +285,37 @@ exports.getAllFriendRequests = async (req, res) => {
     }
 };
 
-// ROUTE 7 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// ROUTE 7 : FOR USER TO ACCEPT FRIEND REQUESTS
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/acceptrequest
+// AUTHENTICATION REQUIRED
+
+exports.acceptRequest = async (req, res) => {
+    try {
+        const userID = req.user.id;
+        const wannaBeFriend = req.body.friend;
+        console.log(wannaBeFriend);
+        const user = await User.findById(userID);
+        const userWithFriend = await user.updateOne({
+            friend: [
+                {
+                    friendId: wannaBeFriend,
+                },
+            ],
+        });
+
+        const friendRequests = await FriendRequest.deleteOne({
+            from: wannaBeFriend,
+            to: userID,
+        });
+        res.json({ friendRequests });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+// ROUTE 8 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
 // METHOD : GET
 // ENDPOINT : http://localhost:5000/api/filtereduser
 // AUTHENTICATION REQUIRED

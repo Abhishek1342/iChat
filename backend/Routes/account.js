@@ -100,7 +100,13 @@ router.post("/friendrequest", authUser, accountController.friendRequest);
 
 router.get("/friendrequest", authUser, accountController.getAllFriendRequests);
 
-// ROUTE 8 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// ROUTE 8 : FOR USER TO ACCEPT FRIEND REQUESTS
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/acceptrequest
+// AUTHENTICATION REQUIRED
+router.post("/acceptrequest", authUser, accountController.acceptRequest);
+
+// ROUTE 9 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
 // METHOD : GET
 // ENDPOINT : http://localhost:5000/api/filtereduser
 // AUTHENTICATION REQUIRED

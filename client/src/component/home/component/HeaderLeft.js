@@ -207,6 +207,7 @@ const HeaderLeft = () => {
                 <DialogTitle id="scroll-dialog-title">Notification</DialogTitle>
                 <DialogContent dividers={scroll === "paper"}>
                     {friendRequest.map((item) => {
+                        console.log(item._id);
                         return (
                             <div
                                 className="notificationContainer"
