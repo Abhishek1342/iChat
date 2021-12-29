@@ -91,7 +91,7 @@ const UserListPannel = () => {
             }
         };
         searchUser();
-    }, [token, searchTerm]);
+    }, [searchTerm]);
 
     //material ui states -----------------------------------------
     const classes = useStyles();
@@ -118,6 +118,7 @@ const UserListPannel = () => {
                     },
                 }
             );
+            console.log(frindrequest);
         } catch (err) {
             console.log(err);
         }
@@ -132,7 +133,7 @@ const UserListPannel = () => {
                     },
                 }
             );
-            console.log();
+            console.log(friendRequest);
         } catch (error) {
             console.log(error);
         }

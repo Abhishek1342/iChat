@@ -106,7 +106,14 @@ router.get("/friendrequest", authUser, accountController.getAllFriendRequests);
 // AUTHENTICATION REQUIRED
 router.post("/acceptrequest", authUser, accountController.acceptRequest);
 
-// ROUTE 9 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// ROUTE 9 : FOR USER TO CANCEL FRIEND REQUESTS
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/cancelrequest
+// AUTHENTICATION REQUIRED
+
+router.post("/cancelrequest", authUser, accountController.cancelRequest);
+
+// ROUTE 10 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
 // METHOD : GET
 // ENDPOINT : http://localhost:5000/api/filtereduser
 // AUTHENTICATION REQUIRED

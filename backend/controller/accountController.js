@@ -216,7 +216,7 @@ exports.friendRequest = async (req, res) => {
                 { to: fromUser, from: toUser },
             ],
         });
-        console.log(existfriendRqust);
+        // console.log(existfriendRqust);
         if (toUser != fromUser) {
             if (existfriendRqust.length > 0) {
                 success = false;
@@ -227,9 +227,9 @@ exports.friendRequest = async (req, res) => {
                     to: toUser,
                 });
                 const friendRequest = await newFriendRequest.save();
-                sucess = true;
+                success = true;
                 res.status(200).json({
-                    sucess,
+                    success,
                     msg: "Successfuly sent friend request",
                 });
             }
@@ -291,31 +291,61 @@ exports.getAllFriendRequests = async (req, res) => {
 // AUTHENTICATION REQUIRED
 
 exports.acceptRequest = async (req, res) => {
+    let success = false;
     try {
         const userID = req.user.id;
         const wannaBeFriend = req.body.friend;
         console.log(wannaBeFriend);
-        const user = await User.findById(userID);
+        const user = await User.findOne({ _id: userID });
         const userWithFriend = await user.updateOne({
-            friend: [
-                {
-                    friendId: wannaBeFriend,
-                },
-            ],
+            $push: { friend: wannaBeFriend },
         });
 
         const friendRequests = await FriendRequest.deleteOne({
             from: wannaBeFriend,
             to: userID,
         });
-        res.json({ friendRequests });
+        if (userWithFriend && friendRequests) {
+            success = true;
+        }
+        res.status(200).json({
+            success,
+            msg: "Friend request accepted succefully",
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ err: "Server error" });
     }
 };
 
-// ROUTE 8 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// ROUTE 8 : FOR USER TO CANCEL FRIEND REQUESTS
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/cancelrequest
+// AUTHENTICATION REQUIRED
+
+exports.cancelRequest = async (req, res) => {
+    let success = false;
+    try {
+        const userID = req.user.id;
+        const rejectionOnFace = req.body.rejected;
+        const deleteRequest = await FriendRequest.deleteOne({
+            to: userID,
+            from: rejectionOnFace,
+        });
+        if (deleteRequest) {
+            success = true;
+            res.status(200).json({
+                success,
+                msg: "Successfully canceled the friend request",
+            });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+// ROUTE 9 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
 // METHOD : GET
 // ENDPOINT : http://localhost:5000/api/filtereduser
 // AUTHENTICATION REQUIRED
@@ -332,7 +362,22 @@ exports.filtereduser = async (req, res) => {
         allUser.map((item) => {
             filteredFriendRequests.map((request) => {});
         });
-        console.log(allUser);
+        // console.log(allUser);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};
+
+// ROUTE 10 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/filtereduser
+// AUTHENTICATION REQUIRED
+exports.searchFriend = (req, res) => {
+    let success = false;
+    try {
+        const searchTerm = req.body.searchFriend;
+        const friends = await User.find({ $regex: { name: searchTerm } });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ err: "Server error" });

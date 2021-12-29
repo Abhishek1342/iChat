@@ -126,10 +126,34 @@ const HeaderLeft = () => {
             console.log(error);
         }
     };
+    const acceptRequest = async (id) => {
+        const accept = await axios.post(
+            `${baseUrl}/api/acceptrequest`,
+            { friend: id },
+            {
+                headers: { "auth-token": token },
+            }
+        );
+        if (accept.data.status === 200) {
+            console.log(accept.data);
+        }
+    };
+    const cancelRequest = async (id) => {
+        const cancel = await axios.post(
+            `${baseUrl}/api/cancelrequest`,
+            { rejected: id },
+            {
+                headers: { "auth-token": token },
+            }
+        );
+        if (cancel.data.status === 200) {
+            console.log(cancel.data);
+        }
+    };
     useEffect(() => {
         fetchUser();
         friendRequests();
-    }, [open]);
+    }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <div className="headerContainer">
@@ -231,12 +255,18 @@ const HeaderLeft = () => {
                                     <button
                                         type="button"
                                         className="btn btn-danger"
+                                        onClick={() => {
+                                            cancelRequest(item._id);
+                                        }}
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="button"
                                         className="btn btn-primary"
+                                        onClick={() => {
+                                            acceptRequest(item._id);
+                                        }}
                                     >
                                         Accept
                                     </button>
