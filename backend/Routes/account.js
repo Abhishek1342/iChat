@@ -120,4 +120,10 @@ router.post("/cancelrequest", authUser, accountController.cancelRequest);
 
 router.get("/filtereduser", authUser, accountController.filtereduser);
 
+// ROUTE 11 : FOR USER TO SEE ALL FRIENDS
+// METHOD : GET
+// ENDPOINT : http://localhost:5000/api/friends
+// AUTHENTICATION REQUIRED
+router.get("/friends", authUser, accountController.allFriends);
+
 module.exports = router;

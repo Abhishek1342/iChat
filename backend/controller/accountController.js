@@ -295,8 +295,11 @@ exports.acceptRequest = async (req, res) => {
     try {
         const userID = req.user.id;
         const wannaBeFriend = req.body.friend;
-        console.log(wannaBeFriend);
         const user = await User.findOne({ _id: userID });
+        const friend = await User.findById(wannaBeFriend);
+        const putMeOnFriend = await friend.updateOne({
+            $push: { friend: userID },
+        });
         const userWithFriend = await user.updateOne({
             $push: { friend: wannaBeFriend },
         });
@@ -369,15 +372,35 @@ exports.filtereduser = async (req, res) => {
     }
 };
 
-// ROUTE 10 : FOR USER TO SEE ALL GLOBAL NON FRIEND USER WHO HAS NOT EVEN RECIEVED OR SEND REQUESTS
+// ROUTE 10 : FOR USER TO SEE ALL FRIENDS
 // METHOD : GET
-// ENDPOINT : http://localhost:5000/api/filtereduser
+// ENDPOINT : http://localhost:5000/api/friends
 // AUTHENTICATION REQUIRED
-exports.searchFriend = (req, res) => {
+exports.allFriends = async (req, res) => {
     let success = false;
     try {
-        const searchTerm = req.body.searchFriend;
-        const friends = await User.find({ $regex: { name: searchTerm } });
+        const userID = req.user.id;
+        const friends = await User.findById(userID).select(["friend"]);
+        const friend = friends.friend;
+        if (friend.length > 0) {
+            const friendList = [];
+            try {
+                for (let i = 0; i < friend.length; i++) {
+                    const individualFriend = await User.findById(
+                        friend[i]
+                    ).select(["name", "_id", "profileImage"]);
+                    friendList.push(individualFriend);
+                }
+                success = true;
+                // console.log(friend, friendList);
+                res.status(200).json({ success, friendList });
+            } catch (error) {
+                console.log(error);
+                return res.status(500).json({ err: "unable to fetch data" });
+            }
+        } else {
+            res.status(200).json({ success, msg: "No friends yes" });
+        }
     } catch (error) {
         console.log(error);
         return res.status(500).json({ err: "Server error" });
