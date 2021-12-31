@@ -70,6 +70,7 @@ const useStyles = makeStyles((theme) => ({
 const UserListPannel = () => {
     const [searchTerm, setSearchTerm] = useState({ search: "" });
     const [searchResult, setSearchResult] = useState([]);
+    const [friendList, setFriendList] = useState([]);
     const onChangeSearch = (e) => {
         let searchValue = e.target.value;
         setSearchTerm({ search: searchValue });
@@ -123,6 +124,32 @@ const UserListPannel = () => {
             console.log(err);
         }
     };
+    const friends = async () => {
+        try {
+            const friends = await axios.get(`${baseUrl}/api/friends`, {
+                headers: {
+                    "auth-token": token,
+                },
+            });
+            console.log(friends.data.friendList);
+            if (friends.data.success === 200) {
+                if (friends.data.friendList.length() > 0) {
+                    setFriendList(friends.data.friendList);
+                } else {
+                    console.log("No friends");
+                }
+            } else {
+                console.log("Some error in fetching the data");
+            }
+        } catch (error) {
+            console.log(err);
+        }
+    };
+    useEffect(() => {
+        friends();
+    }, []);
+    console.log(friendList);
+
     const filterFriendRequest = async (item) => {
         try {
             const friendRequest = await axios.get(
