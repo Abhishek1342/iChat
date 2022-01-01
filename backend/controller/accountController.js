@@ -276,8 +276,8 @@ exports.getAllFriendRequests = async (req, res) => {
             });
         } else {
             return res
-                .status(400)
-                .json({ success, msg: "Friend Request Not Found" });
+                .status(200)
+                .json({ success, msg: "No Friend Request Found" });
         }
     } catch (error) {
         console.log(error);

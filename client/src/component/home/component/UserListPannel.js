@@ -119,7 +119,6 @@ const UserListPannel = () => {
                     },
                 }
             );
-            console.log(frindrequest);
         } catch (err) {
             console.log(err);
         }
@@ -131,9 +130,8 @@ const UserListPannel = () => {
                     "auth-token": token,
                 },
             });
-            console.log(friends.data.friendList);
-            if (friends.data.success === 200) {
-                if (friends.data.friendList.length() > 0) {
+            if (friends.data.success === true) {
+                if (friends.data.friendList.length > 0) {
                     setFriendList(friends.data.friendList);
                 } else {
                     console.log("No friends");
@@ -142,13 +140,12 @@ const UserListPannel = () => {
                 console.log("Some error in fetching the data");
             }
         } catch (error) {
-            console.log(err);
+            console.log(error);
         }
     };
     useEffect(() => {
         friends();
     }, []);
-    console.log(friendList);
 
     const filterFriendRequest = async (item) => {
         try {
@@ -160,7 +157,6 @@ const UserListPannel = () => {
                     },
                 }
             );
-            console.log(friendRequest);
         } catch (error) {
             console.log(error);
         }
@@ -201,14 +197,14 @@ const UserListPannel = () => {
                                 />
                             </div>
                             <div className="userListContainer">
-                                {searchResult.map((item) => {
+                                {friendList.map((item) => {
                                     return (
                                         <div
                                             className="userListCard"
                                             key={item._id}
                                         >
                                             <img
-                                                src={profile}
+                                                src={item.profileImage}
                                                 className="userProfileImage"
                                                 alt="user profile"
                                             />
