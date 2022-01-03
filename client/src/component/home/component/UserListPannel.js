@@ -71,9 +71,14 @@ const UserListPannel = () => {
     const [searchTerm, setSearchTerm] = useState({ search: "" });
     const [searchResult, setSearchResult] = useState([]);
     const [friendList, setFriendList] = useState([]);
+    const [friendSearchTerm, setFriendSearchTerm] = useState("");
     const onChangeSearch = (e) => {
         let searchValue = e.target.value;
         setSearchTerm({ search: searchValue });
+    };
+    const onChangeFriendSearch = (e) => {
+        let searchValue = e.target.value;
+        setFriendSearchTerm(searchValue);
     };
 
     useEffect(() => {
@@ -192,53 +197,68 @@ const UserListPannel = () => {
                                     type="text"
                                     placeholder="Search Friend"
                                     name="search"
-                                    value={searchTerm.search}
-                                    onChange={onChangeSearch}
+                                    value={friendSearchTerm}
+                                    onChange={onChangeFriendSearch}
+                                    autoComplete="off"
                                 />
                             </div>
                             <div className="userListContainer">
-                                {friendList.map((item) => {
-                                    return (
-                                        <div
-                                            className="userListCard"
-                                            key={item._id}
-                                        >
-                                            <img
-                                                src={item.profileImage}
-                                                className="userProfileImage"
-                                                alt="user profile"
-                                            />
-                                            <span className="position-relative top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
-                                                <span className="visually-hidden">
-                                                    New alerts
-                                                </span>
-                                            </span>
-                                            <div className="userDetailContainer">
-                                                <div className="userNameandMessage">
-                                                    <h4 className="usersNameHeading">
-                                                        {item.name}
-                                                    </h4>
-                                                    <p className="userMessageAndTime userMessage text-truncate">
-                                                        Message sdfkhkjd
-                                                        fshkfsdf hdfsdfkd
-                                                        dsfhbksdfh dsfhksdh
-                                                    </p>
-                                                </div>
-                                                <div className="MessageTimeAndCount">
-                                                    <p className="userMessageAndTime">
-                                                        13:40
-                                                    </p>
-                                                    <span className="mt-1 badge bg-success">
-                                                        99
-                                                        <span className="visually-hidden">
-                                                            unread messages
-                                                        </span>
+                                {friendList
+                                    .filter((item) => {
+                                        if (item === "") {
+                                            return item;
+                                        } else if (
+                                            item.name
+                                                .toLowerCase()
+                                                .includes(
+                                                    friendSearchTerm.toLowerCase()
+                                                )
+                                        ) {
+                                            return item;
+                                        }
+                                    })
+                                    .map((item) => {
+                                        return (
+                                            <div
+                                                className="userListCard"
+                                                key={item._id}
+                                            >
+                                                <img
+                                                    src={item.profileImage}
+                                                    className="userProfileImage"
+                                                    alt="user profile"
+                                                />
+                                                <span className="position-relative top-1 start-1 p-1 bg-success border border-light rounded-circle activeStatus">
+                                                    <span className="visually-hidden">
+                                                        New alerts
                                                     </span>
+                                                </span>
+                                                <div className="userDetailContainer">
+                                                    <div className="userNameandMessage">
+                                                        <h4 className="usersNameHeading">
+                                                            {item.name}
+                                                        </h4>
+                                                        <p className="userMessageAndTime userMessage text-truncate">
+                                                            Message sdfkhkjd
+                                                            fshkfsdf hdfsdfkd
+                                                            dsfhbksdfh dsfhksdh
+                                                        </p>
+                                                    </div>
+                                                    <div className="MessageTimeAndCount">
+                                                        <p className="userMessageAndTime">
+                                                            13:40
+                                                        </p>
+                                                        <span className="mt-1 badge bg-success">
+                                                            99
+                                                            <span className="visually-hidden">
+                                                                unread messages
+                                                            </span>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })}
+                                        );
+                                    })}
                             </div>
                         </TabPanel>
                         <TabPanel value={value} index={1} dir={theme.direction}>

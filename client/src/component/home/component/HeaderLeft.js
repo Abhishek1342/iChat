@@ -136,6 +136,7 @@ const HeaderLeft = () => {
         );
         if (accept.data.status === 200) {
             console.log(accept.data);
+            await friendRequests();
         }
     };
     const cancelRequest = async (id) => {
@@ -148,6 +149,7 @@ const HeaderLeft = () => {
         );
         if (cancel.data.status === 200) {
             console.log(cancel.data);
+            await friendRequests();
         }
     };
     useEffect(() => {
