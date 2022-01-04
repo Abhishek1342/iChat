@@ -217,26 +217,44 @@ exports.friendRequest = async (req, res) => {
             ],
         });
         // console.log(existfriendRqust);
-        if (toUser != fromUser) {
-            if (existfriendRqust.length > 0) {
-                success = false;
-                res.status(400).json({ msg: "Already sent friend request" });
+        const alreadyFriend = await User.findById(fromUser).select(["friends"]);
+        let alreadyFriendStatus = false;
+        for (let i = 0; i < alreadyFriend.length; i++) {
+            if (alreadyFriend[i] === toUser) {
+                alreadyFriendStatus = true;
             } else {
-                const newFriendRequest = new FriendRequest({
-                    from: fromUser,
-                    to: toUser,
-                });
-                const friendRequest = await newFriendRequest.save();
+                alreadyFriendStatus = false;
+            }
+        }
+        if (alreadyFriendStatus) {
+            if (toUser != fromUser) {
+                if (existfriendRqust.length > 0) {
+                    success = true;
+                    res.status(200).json({
+                        msg: "Already sent friend request",
+                    });
+                } else {
+                    const newFriendRequest = new FriendRequest({
+                        from: fromUser,
+                        to: toUser,
+                    });
+                    const friendRequest = await newFriendRequest.save();
+                    success = true;
+                    res.status(200).json({
+                        success,
+                        msg: "Successfuly sent friend request",
+                    });
+                }
+            } else {
                 success = true;
                 res.status(200).json({
-                    success,
-                    msg: "Successfuly sent friend request",
+                    msg: "Can't send friend request to yourself",
                 });
             }
         } else {
-            success = false;
-            res.status(400).json({
-                msg: "Can't send friend request to yourself",
+            success = true;
+            res.status(200).json({
+                msg: "Already friends",
             });
         }
     } catch (error) {
