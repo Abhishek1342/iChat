@@ -373,17 +373,47 @@ exports.cancelRequest = async (req, res) => {
 
 exports.filtereduser = async (req, res) => {
     try {
+        let success = false;
         const user = req.user.id;
         const filteredFriendRequests = await FriendRequest.find({
             $or: [{ to: user }, { from: user }],
         });
         const filteredUser = [];
+        // console.log(foundIndex, element);
 
-        const allUser = await User.find().select(["-password"]);
-        allUser.map((item) => {
-            filteredFriendRequests.map((request) => {});
+        const allUser = await User.find()
+            .where("_id")
+            .ne(user)
+            .select(["-password"]);
+        const myFriends = await User.findById(user).select(["friend"]);
+        let index = -1;
+        allUser.map((element, index) => {
+            if (myFriends.friend.length > 0) {
+                const foundIndex = myFriends.friend.indexOf(element._id);
+                if (foundIndex > -1) allUser.splice(index, 1);
+            }
         });
-        // console.log(allUser);
+        allUser.map((element, index) => {
+            if (filteredUser.length > 0) {
+                if (filteredFriendRequests.to != user) {
+                    const foundIndex = filteredFriendRequests.to.indexOf(
+                        element._id
+                    );
+                    if (foundIndex > -1) allUser.splice(index, 1);
+                } else {
+                    const foundIndex = filteredFriendRequests.from.indexOf(
+                        element._id
+                    );
+                    if (foundIndex > -1) allUser.splice(index, 1);
+                }
+            }
+        });
+        success = true;
+        res.status(200).json({
+            success,
+            msg: "user filtered successfully",
+            allUser,
+        });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ err: "Server error" });
@@ -394,6 +424,7 @@ exports.filtereduser = async (req, res) => {
 // METHOD : GET
 // ENDPOINT : http://localhost:5000/api/friends
 // AUTHENTICATION REQUIRED
+
 exports.allFriends = async (req, res) => {
     let success = false;
     try {
@@ -424,3 +455,8 @@ exports.allFriends = async (req, res) => {
         return res.status(500).json({ err: "Server error" });
     }
 };
+
+// Array1 [1,2,3,4,5,6]
+//Array2 [2,3]
+//Array3 [3,5]
+//output:[1,4,6]
