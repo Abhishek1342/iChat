@@ -3,11 +3,14 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
+import { ToastContainer } from "react-toastify";
 
 ReactDOM.render(
     //<React.StrictMode>
-       //<App/>
+    //<App/>
     //</React.StrictMode>,
-    <BrowserRouter><App/></BrowserRouter>,
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
     document.getElementById("root")
 );

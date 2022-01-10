@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 import "./loginsignup.css";
 const Signuplogin = () => {
     const baseUrl = "http://localhost:5000";
@@ -47,13 +48,17 @@ const Signuplogin = () => {
             if (json.success === true) {
                 localStorage.setItem("token", json.authToken);
                 history.push("/home");
-                window.location.reload(); //just to remove a bug
+                // const reload = window.location.reload(); //just to remove a bug
+                toast.success("Login Successfull");
             } else {
                 history.push("/");
                 setLogin({ usernameEmail: "", password: "" });
+                console.log("hi");
+                toast.error("Login unsuccessfull");
             }
         } catch (err) {
             console.log(err);
+            toast.error("Login unsuccessfull");
         }
     };
 
@@ -73,19 +78,22 @@ const Signuplogin = () => {
             }
             if (json.success === true) {
                 localStorage.setItem("token", json.authToken);
+                // window.location.reload(); //just to remove a bug
+                toast.success("Successfully created account");
                 history.push("/profile");
-                window.location.reload(); //just to remove a bug
             } else {
                 history.push("/");
+                toast.error(json.err);
                 setSignup({
                     username: "",
-                    Email: "",
+                    email: "",
                     password: "",
                     cpassword: "",
                 });
             }
         } catch (err) {
             console.log(err);
+            toast.error("Signup unsuccessfull");
         }
     };
     if (!localStorage.getItem("token")) {

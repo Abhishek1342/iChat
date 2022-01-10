@@ -3,6 +3,10 @@ import Forgetpassword from "./component/loginsignup/Forgetpassword";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Signuplogin from "./component/loginsignup/Signuplogin";
 import Profile from "./component/loginsignup/Profile";
+//tostify
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 function App() {
     return (
         <>
@@ -22,6 +26,17 @@ function App() {
                     </Route>
                 </Switch>
             </Router>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            ></ToastContainer>
         </>
     );
 }

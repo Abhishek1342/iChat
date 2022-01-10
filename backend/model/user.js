@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
     },
     profileImage: {
         type: String,
+        default: "https://img.icons8.com/material/48/000000/user--v1.png",
     },
     longitude: {
         type: String,

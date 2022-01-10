@@ -160,7 +160,7 @@ exports.currentUser = async (req, res) => {
     let success = false;
     try {
         const userID = req.user.id;
-        const user = await User.findById(userID);
+        const user = await User.findById(userID).select("-password");
         if (user) {
             success = true;
             res.status(200).json({ success, user, msg: "user fetched" });
@@ -217,7 +217,7 @@ exports.friendRequest = async (req, res) => {
             ],
         });
         // console.log(existfriendRqust);
-        const alreadyFriend = await User.findById(fromUser).select(["friends"]);
+        const alreadyFriend = await User.findById(fromUser).select(["friend"]);
         let alreadyFriendStatus = false;
         for (let i = 0; i < alreadyFriend.length; i++) {
             if (alreadyFriend[i] === toUser) {
@@ -226,7 +226,7 @@ exports.friendRequest = async (req, res) => {
                 alreadyFriendStatus = false;
             }
         }
-        if (alreadyFriendStatus) {
+        if (!alreadyFriendStatus) {
             if (toUser != fromUser) {
                 if (existfriendRqust.length > 0) {
                     success = true;
@@ -387,7 +387,6 @@ exports.filtereduser = async (req, res) => {
             .ne(user)
             .select(["-password"]);
         const myFriends = await User.findById(user).select(["friend"]);
-        let index = -1;
         // console.log(myFriends);
 
         allUser.map((element, index) => {
@@ -399,7 +398,7 @@ exports.filtereduser = async (req, res) => {
         });
         allUser.map((element, index) => {
             if (filteredFriendRequests.length > 0) {
-                filteredFriendRequests.map((friendReq, frndIndex) => {
+                filteredFriendRequests.map((friendReq) => {
                     if (friendReq.to != user) {
                         const foundIndex = friendReq.to.indexOf(element._id);
                         if (foundIndex > -1) allUser.splice(index, 1);
