@@ -160,8 +160,8 @@ const UserListPannel = () => {
                 }
             );
             if (friendRequest.data.success === true) {
-                if (friendRequest.data.allUser.length > 0) {
-                    setFilteredUsers(friendRequest.data.allUser);
+                if (friendRequest.data.filteredUser.length > 0) {
+                    setFilteredUsers(friendRequest.data.filteredUser);
                 } else {
                     console.log("No user found");
                 }
@@ -177,7 +177,6 @@ const UserListPannel = () => {
         friends();
         filterFriendRequest();
     }, []);
-    console.log(filteredUsers);
 
     return (
         <div className="usersContainer">
@@ -288,40 +287,54 @@ const UserListPannel = () => {
                                 People around you
                             </h5>
                             <div className="FriendListContainer">
-                                {filteredUsers.map((item) => {
-                                    return (
-                                        <div
-                                            className="userListCard"
-                                            key={item._id}
-                                        >
-                                            <img
-                                                src={item.profileImage}
-                                                className="userProfileImage"
-                                                alt="user profile"
-                                            />
-                                            <div className="userDetailContainer">
-                                                <div className="userNameandMessage">
-                                                    <h4 className="usersNameHeading findFriendUsersName">
-                                                        {item.name}
-                                                    </h4>
-                                                </div>
-                                                <div className="MessageTimeAndCount">
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-primary"
-                                                        onClick={() => {
-                                                            sendFriendRequest(
-                                                                item._id
-                                                            );
-                                                        }}
-                                                    >
-                                                        Add Friend
-                                                    </button>
+                                {filteredUsers
+                                    .filter((item) => {
+                                        if (item === "") {
+                                            return item;
+                                        } else if (
+                                            item.name
+                                                .toLowerCase()
+                                                .includes(
+                                                    searchTerm.search.toLowerCase()
+                                                )
+                                        ) {
+                                            return item;
+                                        }
+                                    })
+                                    .map((item) => {
+                                        return (
+                                            <div
+                                                className="userListCard"
+                                                key={item._id}
+                                            >
+                                                <img
+                                                    src={item.profileImage}
+                                                    className="userProfileImage"
+                                                    alt="user profile"
+                                                />
+                                                <div className="userDetailContainer">
+                                                    <div className="userNameandMessage">
+                                                        <h4 className="usersNameHeading findFriendUsersName">
+                                                            {item.name}
+                                                        </h4>
+                                                    </div>
+                                                    <div className="MessageTimeAndCount">
+                                                        <button
+                                                            type="button"
+                                                            className="btn btn-primary"
+                                                            onClick={() => {
+                                                                sendFriendRequest(
+                                                                    item._id
+                                                                );
+                                                            }}
+                                                        >
+                                                            Add Friend
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    );
-                                })}
+                                        );
+                                    })}
                             </div>
                         </TabPanel>
                     </SwipeableViews>

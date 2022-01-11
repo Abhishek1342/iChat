@@ -379,7 +379,6 @@ exports.filtereduser = async (req, res) => {
         const filteredFriendRequests = await FriendRequest.find({
             $or: [{ to: user }, { from: user }],
         });
-        const filteredUser = [];
         // console.log(filteredFriendRequests);
 
         const allUser = await User.find()
@@ -387,35 +386,31 @@ exports.filtereduser = async (req, res) => {
             .ne(user)
             .select(["-password"]);
         const myFriends = await User.findById(user).select(["friend"]);
-        // console.log(myFriends);
+        const filteredUser = allUser.filter(
+            (el) => myFriends.friend.indexOf(el._id) === -1
+        );
 
-        allUser.map((element, index) => {
-            if (myFriends.friend.length > 0) {
-                const foundIndex = myFriends.friend.indexOf(element._id);
-                // console.log(element, foundIndex);
-                if (foundIndex > -1) allUser.splice(index, 1);
-            }
-        });
-        allUser.map((element, index) => {
+        filteredUser.map((element, index) => {
             if (filteredFriendRequests.length > 0) {
                 filteredFriendRequests.map((friendReq) => {
                     if (friendReq.to != user) {
                         const foundIndex = friendReq.to.indexOf(element._id);
-                        if (foundIndex > -1) allUser.splice(index, 1);
+                        if (foundIndex > -1) filteredUser.splice(index, 1);
                     } else {
                         const foundIndex = friendReq.from.indexOf(element._id);
-                        if (foundIndex > -1) allUser.splice(index, 1);
+                        if (foundIndex > -1) filteredUser.splice(index, 1);
                     }
+                    return filteredUser;
                 });
             }
         });
-        // console.log(allUser);
+        console.log(filteredUser);
 
         success = true;
         res.status(200).json({
             success,
             msg: "user filtered successfully",
-            allUser,
+            filteredUser,
         });
     } catch (error) {
         console.log(error);
@@ -458,8 +453,3 @@ exports.allFriends = async (req, res) => {
         return res.status(500).json({ err: "Server error" });
     }
 };
-
-// Array1 [1,2,3,4,5,6]
-//Array2 [2,3]
-//Array3 [3,5]
-//output:[1,4,6]
