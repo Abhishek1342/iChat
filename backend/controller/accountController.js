@@ -404,7 +404,7 @@ exports.filtereduser = async (req, res) => {
                 });
             }
         });
-        console.log(filteredUser);
+        // console.log(filteredUser);
 
         success = true;
         res.status(200).json({

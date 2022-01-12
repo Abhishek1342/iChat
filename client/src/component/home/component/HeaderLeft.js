@@ -13,6 +13,7 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
+import Badge from "@material-ui/core/Badge";
 import { makeStyles } from "@material-ui/core/styles";
 
 // material ui dialog------------------------------------------
@@ -166,7 +167,13 @@ const HeaderLeft = () => {
             />
             <div className="leftHeaderRightContainer">
                 <Button onClick={handleClickOpenDialog("paper")}>
-                    <i className="fas fa-bell iconColor "></i>
+                    <Badge
+                        badgeContent={friendRequest.length}
+                        color="primary"
+                        max={9}
+                    >
+                        <i className="fas fa-bell iconColor "></i>
+                    </Badge>
                 </Button>
 
                 {/*-----------------material ui components-------------------------*/}

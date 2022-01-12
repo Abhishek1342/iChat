@@ -24,6 +24,11 @@
     justify-content: space-between;
     align-items: center;
 }
+
+/*material ui fix for project for badge */
+.MuiBadge-colorPrimary {
+    background-color: var(--blue) !important;
+}
 /*Notification modal*/
 .notificationContainer {
     display: flex;
