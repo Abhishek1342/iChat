@@ -4,6 +4,11 @@ import "./commonStyle.css";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 
+//redux -----------------------------------------------
+
+import { useDispatch, useSelector } from "react-redux";
+import hi from "../../../redux/actions/action";
+
 //material ui components ------------------------------
 
 import Button from "@material-ui/core/Button";
@@ -39,6 +44,10 @@ const HeaderLeft = () => {
 
     const history = useHistory();
     const classes = useStyles();
+
+    // const [reduxState, setRedeuxState] = useState();
+    const state = useSelector((state) => state);
+    const dispatch = useDispatch();
 
     // material ui states -------------------------------------
 
@@ -117,6 +126,7 @@ const HeaderLeft = () => {
     const [friendRequest, setFriendRequest] = useState([]);
     const friendRequests = async () => {
         try {
+            dispatch(hi(2));
             const res = await axios(`${baseUrl}/api/friendrequest`, {
                 headers: { "auth-token": token },
             });
@@ -165,6 +175,8 @@ const HeaderLeft = () => {
                 className="userProfileImageHeader"
                 alt="profile"
             />
+            {state?.state}
+            {console.log(state)}
             <div className="leftHeaderRightContainer">
                 <Button onClick={handleClickOpenDialog("paper")}>
                     <Badge
@@ -227,7 +239,6 @@ const HeaderLeft = () => {
                 {/*-------------------------material ui component end -------------------------*/}
             </div>
             {/*-------------------------material ui DIALOG component START -------------------------*/}
-
             <Dialog
                 open={openDialog}
                 onClose={handleCloseDialog}
