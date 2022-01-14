@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {
+    getFilteredUserAPI,
+    friendRequestAPI,
+    getFriendsAPI,
+} from "../../../api/AccountApi";
+import { toast } from "react-toastify";
 
 //material ui components -----------------------------------------
 
@@ -97,66 +103,63 @@ const UserListPannel = () => {
     const sendFriendRequest = async (id) => {
         try {
             const toUser = { toUser: id };
-            const frindrequest = await axios.post(
-                `${baseUrl}/api/friendrequest`,
-                toUser,
-                {
-                    headers: {
-                        "auth-token": token,
-                    },
-                }
-            );
+            const res = await friendRequestAPI(toUser);
+            if (res.data.success === true) {
+                toast.success("Successfully send friend request");
+            } else {
+                toast.warn(res.data.msg);
+            }
         } catch (err) {
             console.log(err);
+            toast.error("Unable to send friend request");
         }
     };
+
+    // API for feaching friend list ---------------------------
+
     const friends = async () => {
         try {
-            const friends = await axios.get(`${baseUrl}/api/friends`, {
-                headers: {
-                    "auth-token": token,
-                },
-            });
-            if (friends.data.success === true) {
-                if (friends.data.friendList.length > 0) {
-                    setFriendList(friends.data.friendList);
+            const res = await getFriendsAPI();
+            if (res.data.success === true) {
+                if (res.data.friendList.length > 0) {
+                    setFriendList(res.data.friendList);
                 } else {
                     console.log("No friends");
                 }
             } else {
+                toast.error("Unable to fetch friends");
                 console.log("Some error in fetching the data");
             }
         } catch (error) {
             console.log(error);
+            toast.error("Unable to fetch friends");
         }
     };
-    const filterFriendRequest = async () => {
+
+    // API for feaching filtered user ---------------------------
+
+    const filterUser = async () => {
         try {
-            const friendRequest = await axios.get(
-                `${baseUrl}/api/filtereduser`,
-                {
-                    headers: {
-                        "auth-token": token,
-                    },
-                }
-            );
-            if (friendRequest.data.success === true) {
-                if (friendRequest.data.filteredUser.length > 0) {
-                    setFilteredUsers(friendRequest.data.filteredUser);
+            const res = await getFilteredUserAPI();
+            if (res.data.success === true) {
+                if (res.data.filteredUser.length > 0) {
+                    setFilteredUsers(res.data.filteredUser);
                 } else {
                     console.log("No user found");
                 }
             } else {
+                toast.error("Unable to fetch user");
                 console.log("Error in fetching user");
             }
         } catch (error) {
             console.log(error);
+            toast.error("Unable to fetch user");
         }
     };
 
     useEffect(() => {
         friends();
-        filterFriendRequest();
+        filterUser();
     }, []);
 
     // useEffect(() => {

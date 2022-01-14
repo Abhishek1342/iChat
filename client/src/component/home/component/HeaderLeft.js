@@ -3,7 +3,13 @@ import "./commonStyle.css";
 // import profile from "";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { currentUserAPI } from "../../../api/AccountApi";
+import {
+    acceptFriendRequestAPI,
+    cancelRequestAPI,
+    currentUserAPI,
+    getFriendRequestAPI,
+} from "../../../api/AccountApi";
+import { toast } from "react-toastify";
 
 //redux -----------------------------------------------
 
@@ -131,9 +137,7 @@ const HeaderLeft = () => {
     const friendRequests = async () => {
         try {
             dispatch(hi(2));
-            const res = await axios(`${baseUrl}/api/friendrequest`, {
-                headers: { "auth-token": token },
-            });
+            const res = await getFriendRequestAPI();
             if (res.data.success === true) {
                 setFriendRequest(res.data.friendRequests);
             }
@@ -141,30 +145,38 @@ const HeaderLeft = () => {
             console.log(error);
         }
     };
+
+    // API for accepting friend Requests -------------------------------
+
     const acceptRequest = async (id) => {
-        const accept = await axios.post(
-            `${baseUrl}/api/acceptrequest`,
-            { friend: id },
-            {
-                headers: { "auth-token": token },
+        try {
+            const data = { friend: id };
+            const res = await acceptFriendRequestAPI(data);
+            if (res.data.success === true) {
+                toast.success("Successfully accepted friend request");
+            } else {
+                toast.error(res.data.msg);
             }
-        );
-        if (accept.data.status === 200) {
-            console.log(accept.data);
-            await friendRequests();
+        } catch (error) {
+            toast.error("Unable to accept request");
+            console.log(error);
         }
     };
+
+    // API for rejecting friend Requests -------------------------------
+
     const cancelRequest = async (id) => {
-        const cancel = await axios.post(
-            `${baseUrl}/api/cancelrequest`,
-            { rejected: id },
-            {
-                headers: { "auth-token": token },
+        try {
+            const data = { rejected: id };
+            const res = await cancelRequestAPI(data);
+            if (res.data.success === true) {
+                toast.success("Successfully rejected friend request");
+            } else {
+                toast.error(res.data.msg);
             }
-        );
-        if (cancel.data.status === 200) {
-            console.log(cancel.data);
-            await friendRequests();
+        } catch (error) {
+            toast.error("Unable to reject request");
+            console.log(error);
         }
     };
     useEffect(() => {
