@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import { loginAPI, signupAPI } from "../../api/AccountApi";
 import "./loginsignup.css";
 const Signuplogin = () => {
     const baseUrl = "http://localhost:5000";
@@ -34,26 +35,16 @@ const Signuplogin = () => {
     const submitLogin = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch(`${baseUrl}/api/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(login),
-            });
-            const json = await res.json();
-            if (!json) {
-                console.log("Something went wrong");
-            }
-            if (json.success === true) {
-                localStorage.setItem("token", json.authToken);
+            const res = await loginAPI(login);
+            if (res.data.success === true) {
+                localStorage.setItem("token", res.data.authToken);
                 history.push("/home");
                 // const reload = window.location.reload(); //just to remove a bug
                 toast.success("Login Successfull");
             } else {
                 history.push("/");
                 setLogin({ usernameEmail: "", password: "" });
-                console.log("hi");
+                // console.log("hi");
                 toast.error("Login unsuccessfull");
             }
         } catch (err) {
@@ -65,25 +56,18 @@ const Signuplogin = () => {
     const submitSignup = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch(`${baseUrl}/api/signup`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(signup),
-            });
-            const json = await res.json();
-            if (!json) {
+            const res = await signupAPI(signup);
+            if (!res) {
                 console.log("Something went wrong");
             }
-            if (json.success === true) {
-                localStorage.setItem("token", json.authToken);
+            if (res.data.success === true) {
+                localStorage.setItem("token", res.data.authToken);
                 // window.location.reload(); //just to remove a bug
                 toast.success("Successfully created account");
                 history.push("/profile");
             } else {
                 history.push("/");
-                toast.error(json.err);
+                toast.error(res.data.err);
                 setSignup({
                     username: "",
                     email: "",

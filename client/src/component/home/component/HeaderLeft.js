@@ -3,6 +3,7 @@ import "./commonStyle.css";
 // import profile from "";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
+import { currentUserAPI } from "../../../api/AccountApi";
 
 //redux -----------------------------------------------
 
@@ -110,12 +111,12 @@ const HeaderLeft = () => {
         }
     }, [openDialog]);
 
+    // API for fetching current user ----------------------------------
+
     const [fetchedUser, setFetchedUser] = useState();
     const fetchUser = async () => {
         try {
-            const res = await axios(`${baseUrl}/api/currentuser`, {
-                headers: { "auth-token": token },
-            });
+            const res = await currentUserAPI();
             if (res.data.success === true) {
                 setFetchedUser({ currentUser: res.data.user });
             }
@@ -123,6 +124,9 @@ const HeaderLeft = () => {
             console.log(error);
         }
     };
+
+    // API for fetching friend Requests -------------------------------
+
     const [friendRequest, setFriendRequest] = useState([]);
     const friendRequests = async () => {
         try {

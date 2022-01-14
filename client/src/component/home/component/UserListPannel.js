@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import profile from "../../../media/profile.webp";
 import axios from "axios";
+
 //material ui components -----------------------------------------
 
 import PropTypes from "prop-types";
@@ -69,7 +69,6 @@ const useStyles = makeStyles((theme) => ({
 
 const UserListPannel = () => {
     const [searchTerm, setSearchTerm] = useState({ search: "" });
-    const [searchResult, setSearchResult] = useState([]);
     const [friendList, setFriendList] = useState([]);
     const [friendSearchTerm, setFriendSearchTerm] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -81,24 +80,6 @@ const UserListPannel = () => {
         let searchValue = e.target.value;
         setFriendSearchTerm(searchValue);
     };
-
-    useEffect(() => {
-        const searchUser = async () => {
-            try {
-                const people = await axios.post(
-                    `${baseUrl}/api/searchuser`,
-                    searchTerm,
-                    {
-                        headers: { "auth-token": token },
-                    }
-                );
-                setSearchResult(people.data.user);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        searchUser();
-    }, [searchTerm]);
 
     //material ui states -----------------------------------------
     const classes = useStyles();
@@ -177,6 +158,24 @@ const UserListPannel = () => {
         friends();
         filterFriendRequest();
     }, []);
+
+    // useEffect(() => {
+    //     const searchUser = async () => {
+    //         try {
+    //             const people = await axios.post(
+    //                 `${baseUrl}/api/searchuser`,
+    //                 searchTerm,
+    //                 {
+    //                     headers: { "auth-token": token },
+    //                 }
+    //             );
+    //             setSearchResult(people.data.user);
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+    //     };
+    //     searchUser();
+    // }, [searchTerm]);
 
     return (
         <div className="usersContainer">

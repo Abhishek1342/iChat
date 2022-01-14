@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-
+import { setProfileAPI } from "../../api/AccountApi";
+import { toast } from "react-toastify";
 const baseUrl = "http://localhost:5000";
 const token = localStorage.getItem("token");
 
@@ -10,10 +11,9 @@ const Profile = () => {
     if (!token) {
         history.push("/");
     }
-
     const [profile, setProfile] = useState();
     const [file, setFile] = useState();
-
+    // for previewing selected picture;
     const loadFile = function (event) {
         var image = document.getElementById("output");
         const buttonFileUpload = document.getElementById("buttonFileUpload");
@@ -69,7 +69,7 @@ const Profile = () => {
         }
     };
 
-    const sendData = async (e) => {
+    const submitSetProfile = async (e) => {
         e.preventDefault();
         e.target.innerHTML = "Submitting...";
         const formData = new FormData();
@@ -80,10 +80,10 @@ const Profile = () => {
             profile.gender === 0 ||
             !profile.gender
         ) {
-            return alert("Fill all fields");
+            return toast.warn("Fill all fields");
         }
         if (!file) {
-            return alert("Select profile Image");
+            return toast.warn("Select profile Image");
         }
         formData.append("name", profile.name);
         formData.append("age", profile.age);
@@ -93,21 +93,14 @@ const Profile = () => {
         formData.append("profileImage", file);
 
         try {
-            const res = await axios.post(
-                `${baseUrl}/api/set-profile`,
-
-                formData,
-                {
-                    headers: {
-                        "auth-token": token, //the token is a variable which holds the token
-                    },
-                }
-            );
+            const res = await setProfileAPI(formData);
             if (res.data.success) {
                 history.push("/home");
+                toast.success("Profile Completed Successfully");
             }
         } catch (err) {
             console.log(err);
+            toast.error("Profile Completed Successfully");
         }
     };
 
@@ -206,7 +199,7 @@ const Profile = () => {
                                             <button
                                                 type="submit"
                                                 className="btn btn-primary form-control"
-                                                onClick={sendData}
+                                                onClick={submitSetProfile}
                                                 id="submitProfile"
                                             >
                                                 Submit Profile
