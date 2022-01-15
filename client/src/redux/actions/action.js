@@ -1,7 +1,6 @@
-const hi = (payload) => {
+export const currentUserAction = (payload) => {
     return {
-        type: "HI",
+        type: "CURRENT-USER",
         payload: payload,
     };
 };
-export default hi;

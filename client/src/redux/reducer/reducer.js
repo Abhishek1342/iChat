@@ -1,6 +1,12 @@
-const reducer = (state = 2, action) => {
-    if (action.type === "HI") {
-        return state + action.payload;
+let initailState = {
+    currentUser: {},
+};
+const reducer = (state = initailState, action) => {
+    if (action.type === "CURRENT-USER") {
+        return {
+            ...state,
+            currentUser: { ...state.currentUser, ...action.payload },
+        };
     }
 };
 

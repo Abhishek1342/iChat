@@ -22,9 +22,6 @@ import Tab from "@material-ui/core/Tab";
 
 //################################################################
 
-const baseUrl = "http://localhost:5000";
-let token = localStorage.getItem("token");
-
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
 

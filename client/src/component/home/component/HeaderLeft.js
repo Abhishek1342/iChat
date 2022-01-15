@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 //redux -----------------------------------------------
 
 import { useDispatch, useSelector } from "react-redux";
-import hi from "../../../redux/actions/action";
+import { currentUserAction } from "../../../redux/actions/action";
 
 //material ui components ------------------------------
 
@@ -125,6 +125,7 @@ const HeaderLeft = () => {
             const res = await currentUserAPI();
             if (res.data.success === true) {
                 setFetchedUser({ currentUser: res.data.user });
+                dispatch(currentUserAction(res.data.user));
             }
         } catch (error) {
             console.log(error);
@@ -136,7 +137,6 @@ const HeaderLeft = () => {
     const [friendRequest, setFriendRequest] = useState([]);
     const friendRequests = async () => {
         try {
-            dispatch(hi(2));
             const res = await getFriendRequestAPI();
             if (res.data.success === true) {
                 setFriendRequest(res.data.friendRequests);
@@ -187,11 +187,10 @@ const HeaderLeft = () => {
     return (
         <div className="headerContainer">
             <img
-                src={fetchedUser?.currentUser?.profileImage}
+                src={state?.currentUser?.profileImage}
                 className="userProfileImageHeader"
                 alt="profile"
             />
-            {state?.state}
             {console.log(state)}
             <div className="leftHeaderRightContainer">
                 <Button onClick={handleClickOpenDialog("paper")}>
