@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
     getFilteredUserAPI,
     friendRequestAPI,
     getFriendsAPI,
 } from "../../../api/AccountApi";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import {
+    filteredUserAction,
+    friendsAction,
+} from "../../../redux/actions/action";
 
 //material ui components -----------------------------------------
 
@@ -83,6 +87,9 @@ const UserListPannel = () => {
         let searchValue = e.target.value;
         setFriendSearchTerm(searchValue);
     };
+    // redux ---------------------------------
+    const state = useSelector((state) => state);
+    const dispatch = useDispatch();
 
     //material ui states -----------------------------------------
     const classes = useStyles();
@@ -116,16 +123,21 @@ const UserListPannel = () => {
 
     const friends = async () => {
         try {
-            const res = await getFriendsAPI();
-            if (res.data.success === true) {
-                if (res.data.friendList.length > 0) {
-                    setFriendList(res.data.friendList);
+            let count = 0;
+            if (state.friend.length === 0 && count < 2) {
+                const res = await getFriendsAPI();
+                if (res.data.success === true) {
+                    count++;
+                    if (res.data.friendList.length > 0) {
+                        dispatch(friendsAction(res.data.friendList));
+                        setFriendList(res.data.friendList);
+                    } else {
+                        console.log("No friends");
+                    }
                 } else {
-                    console.log("No friends");
+                    toast.error("Unable to fetch friends");
+                    console.log("Some error in fetching the data");
                 }
-            } else {
-                toast.error("Unable to fetch friends");
-                console.log("Some error in fetching the data");
             }
         } catch (error) {
             console.log(error);
@@ -137,16 +149,22 @@ const UserListPannel = () => {
 
     const filterUser = async () => {
         try {
-            const res = await getFilteredUserAPI();
-            if (res.data.success === true) {
-                if (res.data.filteredUser.length > 0) {
-                    setFilteredUsers(res.data.filteredUser);
+            let count = 0;
+            if (state.filteredUser.length === 0 && count < 2) {
+                const res = await getFilteredUserAPI();
+                if (res.data.success === true) {
+                    count++;
+                    if (res.data.filteredUser.length > 0) {
+                        dispatch(filteredUserAction(res.data.filteredUser));
+                        setFilteredUsers(res.data.filteredUser);
+                    } else {
+                        console.log("No user found");
+                    }
                 } else {
-                    console.log("No user found");
+                    toast.error("Unable to fetch user");
+                    console.log("Error in fetching user");
                 }
             } else {
-                toast.error("Unable to fetch user");
-                console.log("Error in fetching user");
             }
         } catch (error) {
             console.log(error);
@@ -158,7 +176,7 @@ const UserListPannel = () => {
         friends();
         filterUser();
     }, []);
-
+    console.log(state);
     // useEffect(() => {
     //     const searchUser = async () => {
     //         try {
@@ -213,7 +231,7 @@ const UserListPannel = () => {
                                 />
                             </div>
                             <div className="userListContainer">
-                                {friendList
+                                {state.friend
                                     .filter((item) => {
                                         if (item === "") {
                                             return item;
@@ -286,7 +304,7 @@ const UserListPannel = () => {
                                 People around you
                             </h5>
                             <div className="FriendListContainer">
-                                {filteredUsers
+                                {state.filteredUser
                                     .filter((item) => {
                                         if (item === "") {
                                             return item;

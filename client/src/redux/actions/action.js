@@ -4,3 +4,17 @@ export const currentUserAction = (payload) => {
         payload: payload,
     };
 };
+
+export const friendsAction = (payload) => {
+    return {
+        type: "SET-FRIENDS",
+        payload: payload,
+    };
+};
+
+export const filteredUserAction = (payload) => {
+    return {
+        type: "SET-FILTEREDUSER",
+        payload: payload,
+    };
+};

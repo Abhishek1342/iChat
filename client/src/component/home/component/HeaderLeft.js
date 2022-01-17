@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./commonStyle.css";
 // import profile from "";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 import {
     acceptFriendRequestAPI,
     cancelRequestAPI,
@@ -46,9 +45,6 @@ const useStyles = makeStyles((theme) => ({
 //#######################################################
 
 const HeaderLeft = () => {
-    const baseUrl = "http://localhost:5000";
-    const token = localStorage.getItem("token");
-
     const history = useHistory();
     const classes = useStyles();
 
@@ -122,10 +118,12 @@ const HeaderLeft = () => {
     const [fetchedUser, setFetchedUser] = useState();
     const fetchUser = async () => {
         try {
-            const res = await currentUserAPI();
-            if (res.data.success === true) {
-                setFetchedUser({ currentUser: res.data.user });
-                dispatch(currentUserAction(res.data.user));
+            if (Object.keys(state.currentUser).length === 0) {
+                const res = await currentUserAPI();
+                if (res.data.success === true) {
+                    setFetchedUser({ currentUser: res.data.user });
+                    dispatch(currentUserAction(res.data.user));
+                }
             }
         } catch (error) {
             console.log(error);
@@ -182,16 +180,15 @@ const HeaderLeft = () => {
     useEffect(() => {
         fetchUser();
         friendRequests();
-    }, [open]); // eslint-disable-line react-hooks/exhaustive-deps
-
+    }, []);
     return (
         <div className="headerContainer">
             <img
-                src={state?.currentUser?.profileImage}
+                src={state.currentUser.profileImage}
                 className="userProfileImageHeader"
                 alt="profile"
             />
-            {console.log(state)}
+
             <div className="leftHeaderRightContainer">
                 <Button onClick={handleClickOpenDialog("paper")}>
                     <Badge
