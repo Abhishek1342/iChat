@@ -195,6 +195,12 @@ const UserListPannel = () => {
     //     searchUser();
     // }, [searchTerm]);
 
+    // ================================================================
+    const [selectedUser, setSelectedUser] = useState(false);
+    const selected = (id) => {
+        setSelectedUser(true);
+    };
+
     return (
         <div className="usersContainer">
             <ThemeProvider theme={theme}>
@@ -250,6 +256,17 @@ const UserListPannel = () => {
                                             <div
                                                 className="userListCard"
                                                 key={item._id}
+                                                onClick={() =>
+                                                    selected(item._id)
+                                                }
+                                                style={
+                                                    selectedUser
+                                                        ? {
+                                                              backgroundColor:
+                                                                  "#f5f5f5",
+                                                          }
+                                                        : {}
+                                                }
                                             >
                                                 <img
                                                     src={item.profileImage}
