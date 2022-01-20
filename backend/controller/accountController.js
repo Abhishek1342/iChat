@@ -453,3 +453,23 @@ exports.allFriends = async (req, res) => {
         return res.status(500).json({ err: "Server error" });
     }
 };
+
+// ROUTE 12 : **  Helper function to give info of the userid  **
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/id
+// AUTHENTICATION REQUIRED
+
+exports.id = async (req, res) => {
+    try {
+        let success = false;
+        const id = req.id;
+        const user = await User.findById(id).select(["name", "profileImage"]);
+        if (user) {
+            success = true;
+            return res.status(200).json({ success, user });
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ err: "Server error" });
+    }
+};

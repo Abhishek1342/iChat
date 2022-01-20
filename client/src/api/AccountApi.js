@@ -193,3 +193,26 @@ export const getFriendsAPI = async () => {
         console.log("APIERROR : friendsAPI", error);
     }
 };
+
+// ROUTE 12 : **  Helper function to give info of the userid  **
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/id
+// AUTHENTICATION REQUIRED
+
+export const getUserById = async (data) => {
+    try {
+        const res = await axios.post(
+            endpoint.getUserById,
+            { id: data },
+            {
+                headers: {
+                    "auth-token": token,
+                },
+            }
+        );
+        console.log(data);
+        return res;
+    } catch (error) {
+        console.log("APIERROR : getUserById", error);
+    }
+};

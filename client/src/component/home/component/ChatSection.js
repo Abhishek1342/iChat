@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./commonStyle.css";
-
+import axios from "axios";
+import { getUserById } from "../../../api/AccountApi";
 //material ui components ------------------------------
 
 import Button from "@material-ui/core/Button";
@@ -48,7 +49,7 @@ const Friendmessage = (props) => {
 
 // scroll to bottom-------------------------------------
 
-const ChatSection = () => {
+const ChatSection = (props) => {
     const classes = useStyles();
     // material ui states -------------------------------------
 
@@ -85,13 +86,28 @@ const ChatSection = () => {
     }, [open]);
 
     //#########################################################
-
+    const [conversation, setConversation] = useState({});
+    const getConversation = async () => {
+        try {
+            const res = await getUserById(props.conversation);
+            if (res.data.success === true) {
+                setConversation(res.data.user);
+            }
+            console.log(res);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    useEffect(() => {
+        getConversation();
+    }, []);
+    console.log(conversation);
     return (
         <div>
             <div className="headerContainer">
                 <div className="d-flex flex-row align-items-center">
                     <i className="fas fa-user-circle iconColor avtar"></i>
-                    <h4 className="usersName">Abhishek Kumar</h4>
+                    <h4 className="usersName">{conversation.name}</h4>
                 </div>
                 <div className="leftHeaderRightContainer">
                     {/*-----------------material ui components-------------------------*/}

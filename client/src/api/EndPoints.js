@@ -11,6 +11,7 @@ const endpoint = {
     cancelRequest: `${base}/api/cancelrequest`,
     filterUser: `${base}/api/filtereduser`,
     friends: `${base}/api/friends`,
+    getUserById: `${base}/api/id`,
 };
 
 export default endpoint;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ChatSection from "./component/ChatSection";
 import HeaderLeft from "./component/HeaderLeft";
 import UserListPannel from "./component/UserListPannel";
@@ -9,15 +9,20 @@ const Home = () => {
     if (!localStorage.getItem("token")) {
         history.push("/");
     }
+
+    const [selectedConversation, setSelectedConversation] = useState();
+    const selectConversation = (id) => {
+        setSelectedConversation(id);
+    };
     return (
         <div className="container-fluid">
             <div className="row">
                 <div className="col-3">
                     <HeaderLeft />
-                    <UserListPannel />
+                    <UserListPannel setConversation={selectConversation} />
                 </div>
                 <div className="col-9">
-                    <ChatSection />
+                    <ChatSection conversation={selectedConversation} />
                 </div>
             </div>
         </div>

@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
 
 //################################################################
 
-const UserListPannel = () => {
+const UserListPannel = (props) => {
     const [searchTerm, setSearchTerm] = useState({ search: "" });
     const [friendList, setFriendList] = useState([]);
     const [friendSearchTerm, setFriendSearchTerm] = useState("");
@@ -176,7 +176,6 @@ const UserListPannel = () => {
         friends();
         filterUser();
     }, []);
-    console.log(state);
     // useEffect(() => {
     //     const searchUser = async () => {
     //         try {
@@ -198,7 +197,8 @@ const UserListPannel = () => {
     // ================================================================
     const [selectedUser, setSelectedUser] = useState(false);
     const selected = (id) => {
-        setSelectedUser(true);
+        setSelectedUser(id);
+        props.setConversation(id);
     };
 
     return (
@@ -251,7 +251,7 @@ const UserListPannel = () => {
                                             return item;
                                         }
                                     })
-                                    .map((item) => {
+                                    .map((item, index) => {
                                         return (
                                             <div
                                                 className="userListCard"
@@ -260,7 +260,7 @@ const UserListPannel = () => {
                                                     selected(item._id)
                                                 }
                                                 style={
-                                                    selectedUser
+                                                    selectedUser === item._id
                                                         ? {
                                                               backgroundColor:
                                                                   "#f5f5f5",

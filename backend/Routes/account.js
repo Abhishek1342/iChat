@@ -126,4 +126,11 @@ router.get("/filtereduser", authUser, accountController.filtereduser);
 // AUTHENTICATION REQUIRED
 router.get("/friends", authUser, accountController.allFriends);
 
+// ROUTE 12 : **  Helper function to give info of the userid  **
+// METHOD : POST
+// ENDPOINT : http://localhost:5000/api/id
+// AUTHENTICATION REQUIRED
+
+router.post("/id", authUser, accountController.id);
+
 module.exports = router;
