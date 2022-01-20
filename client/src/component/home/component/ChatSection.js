@@ -100,13 +100,17 @@ const ChatSection = (props) => {
     };
     useEffect(() => {
         getConversation();
-    }, []);
-    console.log(conversation);
+    }, [props.conversation]);
     return (
         <div>
             <div className="headerContainer">
                 <div className="d-flex flex-row align-items-center">
-                    <i className="fas fa-user-circle iconColor avtar"></i>
+                    {/* <i className="fas fa-user-circle iconColor avtar"></i> */}
+                    <img
+                        className="conversationProfileImage"
+                        src={conversation.profileImage}
+                        alt={conversation.name}
+                    />
                     <h4 className="usersName">{conversation.name}</h4>
                 </div>
                 <div className="leftHeaderRightContainer">

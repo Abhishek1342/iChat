@@ -114,6 +114,13 @@
     border-radius: 50%;
     border: 1px solid var(--lighttext);
 }
+.conversationProfileImage {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1px solid var(--lighttext);
+}
 .activeStatus {
     top: 15px;
     left: -10px;

@@ -462,7 +462,7 @@ exports.allFriends = async (req, res) => {
 exports.id = async (req, res) => {
     try {
         let success = false;
-        const id = req.id;
+        const id = req.body.id;
         const user = await User.findById(id).select(["name", "profileImage"]);
         if (user) {
             success = true;
