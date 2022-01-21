@@ -210,7 +210,6 @@ export const getUserById = async (data) => {
                 },
             }
         );
-        console.log(data);
         return res;
     } catch (error) {
         console.log("APIERROR : getUserById", error);

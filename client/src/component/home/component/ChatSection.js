@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./commonStyle.css";
 import axios from "axios";
 import { getUserById } from "../../../api/AccountApi";
@@ -93,14 +93,38 @@ const ChatSection = (props) => {
             if (res.data.success === true) {
                 setConversation(res.data.user);
             }
-            console.log(res);
         } catch (error) {
             console.log(error);
         }
     };
+    const [message, setMessage] = useState("");
+    const handleMessage = (e) => {
+        setMessage(e.target.value);
+    };
+    const [myMessage, setMyMessage] = useState([
+        { message: "hi", time: "13:04" },
+    ]);
+    const submitMessage = (e) => {
+        e.preventDefault();
+        const time = new Date();
+        const messageTime = time.getTime();
+        setMyMessage([...myMessage, { message, time: messageTime }]);
+        console.log(myMessage);
+        setMessage("");
+    };
+
+    const chatView = useRef(null);
+    const scrollToBottom = () => {
+        chatView.current.scrollTop = chatView.current.scrollHeight;
+    };
+
     useEffect(() => {
         getConversation();
     }, [props.conversation]);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [myMessage]);
     return (
         <div>
             <div className="headerContainer">
@@ -173,7 +197,7 @@ const ChatSection = (props) => {
             </div>
 
             <div className="chatContainer">
-                <div className="chatViewer">
+                <div className="chatViewer" ref={chatView}>
                     <Mymessage
                         message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
                         time="13:40"
@@ -234,18 +258,33 @@ const ChatSection = (props) => {
                         message="hi fdghs hsdffhk khdfkdkfgkdgfg dfdgabhishekdg "
                         time="13:40"
                     />
+                    {myMessage?.map((item) => {
+                        return (
+                            <Mymessage
+                                key={item.message}
+                                message={item.message}
+                                time={item.time}
+                            />
+                        );
+                    })}
                 </div>
-                <div className="bottomMessageTyper">
+                <form className="bottomMessageTyper">
                     <input
                         className="messageField"
                         type="text"
                         name="chat"
                         placeholder="Write message"
+                        onChange={handleMessage}
+                        value={message}
                     />
-                    <button type="button" className="btn btn-primary">
+                    <button
+                        type="submit"
+                        onClick={submitMessage}
+                        className="btn btn-primary"
+                    >
                         <i className="fab fa-telegram-plane"></i>
                     </button>
-                </div>
+                </form>
             </div>
         </div>
     );
