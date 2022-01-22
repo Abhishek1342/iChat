@@ -259,6 +259,11 @@ const UserListPannel = (props) => {
                                                 onClick={() =>
                                                     selected(item._id)
                                                 }
+                                                onLoad={() => {
+                                                    if (index === 0) {
+                                                        selected(item._id);
+                                                    }
+                                                }}
                                                 style={
                                                     selectedUser === item._id
                                                         ? {

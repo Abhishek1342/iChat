@@ -198,70 +198,10 @@ const ChatSection = (props) => {
 
             <div className="chatContainer">
                 <div className="chatViewer" ref={chatView}>
-                    <Mymessage
-                        message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                        status="seen"
-                    />
-                    <Friendmessage
-                        message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Friendmessage
-                        message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Friendmessage message="hi fdghs  " time="13:40" />
-                    <Friendmessage
-                        message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Friendmessage
-                        message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Mymessage
-                        message="hi hi fdghs dfdgfdg "
-                        time="13:40"
-                        status="Received"
-                    />
-                    <Mymessage
-                        message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                        status="Sent"
-                    />
-                    <Mymessage
-                        message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Mymessage
-                        message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Mymessage
-                        message="hi hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfddddddddddddddddddddddddddddddkjkjkj  jkdjfkdjfkd fjdkkkkkkkkkdkdjfkjd kfjd fkjdkf dkfjdkfjd kfjdkfjdkjf dkfjdkfjkdjfkd fjdf dkjfkdjfkdjfkd djf kd kd fkjdkf kdjfkdjfdjfkdjhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Friendmessage
-                        message="hi fdghs hsdfghsdg dshfgkdhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Friendmessage
-                        message="hi fdghs hsdfhfg dfhgkdhfgkds fghsdgfhlds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Friendmessage
-                        message="hi fdghs hsdfghsdg dshfgkdhfg dfhds fglhfddfhk khdfkdkfgkdgfg dfdgfdg "
-                        time="13:40"
-                    />
-                    <Friendmessage
-                        message="hi fdghs hsdffhk khdfkdkfgkdgfg dfdgabhishekdg "
-                        time="13:40"
-                    />
-                    {myMessage?.map((item) => {
+                    {myMessage?.map((item, index) => {
                         return (
                             <Mymessage
-                                key={item.message}
+                                key={index}
                                 message={item.message}
                                 time={item.time}
                             />
