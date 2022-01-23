@@ -24,7 +24,7 @@ const storage = multer.diskStorage({
 app.use(multer({ storage: storage }).single("profileImage"));
 
 app.use("/api/", require("./Routes/account"));
-app.use("/api/", require("./Routes/conversations"));
+app.use("/api/", require("./Routes/message"));
 
 app.use((req, res, next) => {
     res.status(404).send("Every");
