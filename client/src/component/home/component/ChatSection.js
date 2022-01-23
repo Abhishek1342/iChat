@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "./commonStyle.css";
 import axios from "axios";
 import { getUserById } from "../../../api/AccountApi";
+import { format } from "timeago.js";
 //material ui components ------------------------------
 
 import Button from "@material-ui/core/Button";
@@ -102,13 +103,12 @@ const ChatSection = (props) => {
         setMessage(e.target.value);
     };
     const [myMessage, setMyMessage] = useState([
-        { message: "hi", time: "13:04" },
+        { message: "hi", time: new Date() },
     ]);
     const submitMessage = (e) => {
         e.preventDefault();
         const time = new Date();
-        const messageTime = time.getTime();
-        setMyMessage([...myMessage, { message, time: messageTime }]);
+        setMyMessage([...myMessage, { message, time: time }]);
         console.log(myMessage);
         setMessage("");
     };
@@ -203,7 +203,7 @@ const ChatSection = (props) => {
                             <Mymessage
                                 key={index}
                                 message={item.message}
-                                time={item.time}
+                                time={format(item.time)}
                             />
                         );
                     })}
