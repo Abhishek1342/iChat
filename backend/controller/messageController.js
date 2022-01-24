@@ -11,13 +11,13 @@ exports.newMessage = async (req, res) => {
 
     const newMessage = new Message({
         receiver: req.body.receiver,
-        sender: req.body.sender,
+        sender: req.user.id,
         text: req.body.text,
     });
     try {
         const createdMessage = await newMessage.save();
         success = true;
-        res.status(200).json(success, createdMessage);
+        res.status(200).json({ success, createdMessage });
     } catch (err) {
         console.log(err);
         return res.status(500).json({ err: "Server error" });
@@ -34,18 +34,17 @@ exports.getMessage = async (req, res) => {
     try {
         const messages = await Message.find({
             $or: [
-                {
-                    $and: [{ sender: req.user.id, receiver: req.params.id }],
-                    $and: [{ receiver: req.user.id, sender: req.params.id }],
-                },
+                { sender: req.user.id, receiver: req.params.id },
+                { receiver: req.user.id, sender: req.params.id },
             ],
+            // { $or: [{ receiver: req.user.id, sender: req.params.id }] },
         });
         if (messages) {
             success = true;
-            res.status(200).json(success, messages);
+            res.status(200).json({ success, messages });
         } else {
             success = true;
-            res.status(200).json(success, "No messages found");
+            res.status(200).json({ success, msg: "No messages found" });
         }
     } catch (err) {
         console.log(err);

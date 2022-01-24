@@ -12,6 +12,10 @@ const endpoint = {
     filterUser: `${base}/api/filtereduser`,
     friends: `${base}/api/friends`,
     getUserById: `${base}/api/id`,
+
+    // Message endpoints ------------------------------
+
+    message: `${base}/api/message`,
 };
 
 export default endpoint;

@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./commonStyle.css";
-import axios from "axios";
 import { getUserById } from "../../../api/AccountApi";
 import { format } from "timeago.js";
+import { toast } from "react-toastify";
+
+import { newMessageAPI, getMessageAPI } from "../../../api/MessageApi";
 //material ui components ------------------------------
 
 import Button from "@material-ui/core/Button";
@@ -103,16 +105,45 @@ const ChatSection = (props) => {
         setMessage(e.target.value);
     };
     const [myMessage, setMyMessage] = useState([
-        { message: "hi", time: new Date() },
+        { text: "hi", date: new Date() },
     ]);
-    const submitMessage = (e) => {
+
+    //Api call for sending message -------------------------------------
+
+    const submitMessage = async (e) => {
         e.preventDefault();
         const time = new Date();
-        setMyMessage([...myMessage, { message, time: time }]);
-        console.log(myMessage);
+        setMyMessage([
+            ...myMessage,
+            { text: message, date: time, receiver: props.conversation },
+        ]);
+        const data = {
+            receiver: props.conversation,
+            text: message,
+        };
+        try {
+            const res = await newMessageAPI(data);
+        } catch (error) {
+            console.log(error);
+            toast.error("Unable to send message");
+        }
         setMessage("");
     };
 
+    //Api call for fetching all message -------------------------------------
+
+    const getMessage = async () => {
+        try {
+            const allMessages = await getMessageAPI(props?.conversation);
+            if (allMessages.data.success === true) {
+                setMyMessage(allMessages.data.messages);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Unable to get message");
+        }
+    };
+    // console.log(myMessage);
     const chatView = useRef(null);
     const scrollToBottom = () => {
         chatView.current.scrollTop = chatView.current.scrollHeight;
@@ -125,6 +156,11 @@ const ChatSection = (props) => {
     useEffect(() => {
         scrollToBottom();
     }, [myMessage]);
+
+    useEffect(() => {
+        getMessage();
+    }, [props.conversation]);
+
     return (
         <div>
             <div className="headerContainer">
@@ -199,13 +235,23 @@ const ChatSection = (props) => {
             <div className="chatContainer">
                 <div className="chatViewer" ref={chatView}>
                     {myMessage?.map((item, index) => {
-                        return (
-                            <Mymessage
-                                key={index}
-                                message={item.message}
-                                time={format(item.time)}
-                            />
-                        );
+                        if (item.receiver === props.conversation) {
+                            return (
+                                <Mymessage
+                                    key={index}
+                                    message={item.text}
+                                    time={format(item.date)}
+                                />
+                            );
+                        } else {
+                            return (
+                                <Friendmessage
+                                    key={index}
+                                    message={item.text}
+                                    time={format(item.date)}
+                                />
+                            );
+                        }
                     })}
                 </div>
                 <form className="bottomMessageTyper">
