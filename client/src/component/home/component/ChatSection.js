@@ -34,8 +34,8 @@ const Mymessage = (props) => {
         <div className="myMessageContainer">
             <p className="message">{props.message}</p>
             <div className=" timeStamp">
-                <p>{props.time}</p>
                 <p>{props.status}</p>
+                <p>{props.time}</p>
             </div>
         </div>
     );
@@ -104,9 +104,7 @@ const ChatSection = (props) => {
     const handleMessage = (e) => {
         setMessage(e.target.value);
     };
-    const [myMessage, setMyMessage] = useState([
-        { text: "hi", date: new Date() },
-    ]);
+    const [myMessage, setMyMessage] = useState([{}]);
 
     //Api call for sending message -------------------------------------
 
@@ -115,7 +113,12 @@ const ChatSection = (props) => {
         const time = new Date();
         setMyMessage([
             ...myMessage,
-            { text: message, date: time, receiver: props.conversation },
+            {
+                text: message,
+                date: time,
+                receiver: props.conversation,
+                status: "sent",
+            },
         ]);
         const data = {
             receiver: props.conversation,
@@ -241,6 +244,7 @@ const ChatSection = (props) => {
                                     key={index}
                                     message={item.text}
                                     time={format(item.date)}
+                                    status={item.status}
                                 />
                             );
                         } else {
