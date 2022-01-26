@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ChatSection from "./component/ChatSection";
 import HeaderLeft from "./component/HeaderLeft";
 import UserListPannel from "./component/UserListPannel";
 import { useHistory } from "react-router-dom";
+import openSocket from "socket.io-client";
 
 const Home = () => {
     const history = useHistory();
@@ -14,6 +15,10 @@ const Home = () => {
     const selectConversation = (id) => {
         setSelectedConversation(id);
     };
+    useEffect(() => {
+        openSocket("http://localhost:5000/");
+    }, []);
+
     return (
         <div className="container-fluid">
             <div className="row">
