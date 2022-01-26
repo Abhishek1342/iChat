@@ -115,13 +115,13 @@ const HeaderLeft = () => {
 
     // API for fetching current user ----------------------------------
 
-    const [fetchedUser, setFetchedUser] = useState();
+    // const [fetchedUser, setFetchedUser] = useState();
     const fetchUser = async () => {
         try {
             if (Object.keys(state.currentUser).length === 0) {
                 const res = await currentUserAPI();
                 if (res.data.success === true) {
-                    setFetchedUser({ currentUser: res.data.user });
+                    // setFetchedUser({ currentUser: res.data.user });
                     dispatch(currentUserAction(res.data.user));
                 }
             }
@@ -180,7 +180,7 @@ const HeaderLeft = () => {
     useEffect(() => {
         fetchUser();
         friendRequests();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     return (
         <div className="headerContainer">
             <img

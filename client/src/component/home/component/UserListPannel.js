@@ -76,9 +76,9 @@ const useStyles = makeStyles((theme) => ({
 
 const UserListPannel = (props) => {
     const [searchTerm, setSearchTerm] = useState({ search: "" });
-    const [friendList, setFriendList] = useState([]);
+    // const [friendList, setFriendList] = useState([]);
     const [friendSearchTerm, setFriendSearchTerm] = useState("");
-    const [filteredUsers, setFilteredUsers] = useState([]);
+    // const [filteredUsers, setFilteredUsers] = useState([]);
     const onChangeSearch = (e) => {
         let searchValue = e.target.value;
         setSearchTerm({ search: searchValue });
@@ -130,7 +130,7 @@ const UserListPannel = (props) => {
                     count++;
                     if (res.data.friendList.length > 0) {
                         dispatch(friendsAction(res.data.friendList));
-                        setFriendList(res.data.friendList);
+                        // setFriendList(res.data.friendList);
                     } else {
                         console.log("No friends");
                     }
@@ -156,7 +156,7 @@ const UserListPannel = (props) => {
                     count++;
                     if (res.data.filteredUser.length > 0) {
                         dispatch(filteredUserAction(res.data.filteredUser));
-                        setFilteredUsers(res.data.filteredUser);
+                        // setFilteredUsers(res.data.filteredUser);
                     } else {
                         console.log("No user found");
                     }
@@ -175,7 +175,7 @@ const UserListPannel = (props) => {
     useEffect(() => {
         friends();
         filterUser();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     // useEffect(() => {
     //     const searchUser = async () => {
     //         try {
@@ -249,6 +249,8 @@ const UserListPannel = (props) => {
                                                 )
                                         ) {
                                             return item;
+                                        } else {
+                                            return false;
                                         }
                                     })
                                     .map((item, index) => {
@@ -338,6 +340,8 @@ const UserListPannel = (props) => {
                                                 )
                                         ) {
                                             return item;
+                                        } else {
+                                            return false;
                                         }
                                     })
                                     .map((item) => {

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { loginAPI, signupAPI } from "../../api/AccountApi";
 import "./loginsignup.css";
 const Signuplogin = () => {
-    const baseUrl = "http://localhost:5000";
+    // const baseUrl = "http://localhost:5000";
 
     let history = useHistory();
 

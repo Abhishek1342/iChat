@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import { setProfileAPI } from "../../api/AccountApi";
 import { toast } from "react-toastify";
-const baseUrl = "http://localhost:5000";
+// const baseUrl = "http://localhost:5000";
 const token = localStorage.getItem("token");
 
 const Profile = () => {

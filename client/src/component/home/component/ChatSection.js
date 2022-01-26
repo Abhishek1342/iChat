@@ -3,6 +3,7 @@ import "./commonStyle.css";
 import { getUserById } from "../../../api/AccountApi";
 import { format } from "timeago.js";
 import { toast } from "react-toastify";
+import openSocket from "socket.io-client";
 
 import { newMessageAPI, getMessageAPI } from "../../../api/MessageApi";
 //material ui components ------------------------------
@@ -125,7 +126,7 @@ const ChatSection = (props) => {
             text: message,
         };
         try {
-            const res = await newMessageAPI(data);
+            await newMessageAPI(data);
         } catch (error) {
             console.log(error);
             toast.error("Unable to send message");
@@ -154,15 +155,20 @@ const ChatSection = (props) => {
 
     useEffect(() => {
         getConversation();
-    }, [props.conversation]);
+        getMessage();
+    }, [props?.conversation]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         scrollToBottom();
     }, [myMessage]);
 
+    //################### SOCKET IO ##################
+
+    const [socket, setSocket] = useState(null);
     useEffect(() => {
-        getMessage();
-    }, [props.conversation]);
+        setSocket(openSocket("http://localhost:5000/"));
+    }, []);
+    console.log(socket);
 
     return (
         <div>

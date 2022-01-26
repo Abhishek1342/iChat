@@ -33,6 +33,9 @@ app.use((req, res, next) => {
 const server = app.listen(PORT, () => {
     console.log(`Server started on ${PORT}`);
 });
+
+//################### SOCKET IO #########################
+let user = [];
 const io = require("./Socket").init(server);
 io.on("connection", () => {
     console.log("User connected");
