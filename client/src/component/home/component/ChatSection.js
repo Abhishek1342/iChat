@@ -4,6 +4,7 @@ import { getUserById } from "../../../api/AccountApi";
 import { format } from "timeago.js";
 import { toast } from "react-toastify";
 import openSocket from "socket.io-client";
+import { startConversation } from "../../../conversation";
 
 import { newMessageAPI, getMessageAPI } from "../../../api/MessageApi";
 //material ui components ------------------------------
@@ -32,11 +33,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Mymessage = (props) => {
     return (
-        <div className="myMessageContainer">
-            <p className="message">{props.message}</p>
-            <div className=" timeStamp">
-                <p>{props.status}</p>
-                <p>{props.time}</p>
+        <div className="myMessageContainer" unselectable="off">
+            <p className="message" unselectable="off">
+                {props.message}
+            </p>
+            <div className=" timeStamp" unselectable="off">
+                <p unselectable="off">{props.status}</p>
+                <p unselectable="off">{props.time}</p>
             </div>
         </div>
     );
@@ -44,9 +47,13 @@ const Mymessage = (props) => {
 // message of friend ----------------
 const Friendmessage = (props) => {
     return (
-        <div className="friendMessageContainer">
-            <p className="message">{props.message}</p>
-            <p className=" timeStamp">{props.time}</p>
+        <div className="friendMessageContainer" unselectable="off">
+            <p className="message" unselectable="off">
+                {props.message}
+            </p>
+            <p className=" timeStamp" unselectable="off">
+                {props.time}
+            </p>
         </div>
     );
 };
@@ -153,9 +160,17 @@ const ChatSection = (props) => {
         chatView.current.scrollTop = chatView.current.scrollHeight;
     };
 
+    const [starter, setStarter] = useState();
+    const spinStarter = () => {
+        const random = Math.floor(Math.random() * startConversation.length);
+
+        setStarter(startConversation[random].text);
+    };
+
     useEffect(() => {
         getConversation();
         getMessage();
+        spinStarter();
     }, [props?.conversation]); // eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -243,26 +258,32 @@ const ChatSection = (props) => {
 
             <div className="chatContainer">
                 <div className="chatViewer" ref={chatView}>
-                    {myMessage?.map((item, index) => {
-                        if (item.receiver === props.conversation) {
-                            return (
-                                <Mymessage
-                                    key={index}
-                                    message={item.text}
-                                    time={format(item.date)}
-                                    status={item.status}
-                                />
-                            );
-                        } else {
-                            return (
-                                <Friendmessage
-                                    key={index}
-                                    message={item.text}
-                                    time={format(item.date)}
-                                />
-                            );
-                        }
-                    })}
+                    {myMessage.length > 0 ? (
+                        myMessage.map((item, index) => {
+                            if (item.receiver === props.conversation) {
+                                return (
+                                    <Mymessage
+                                        key={index}
+                                        message={item.text}
+                                        time={format(item.date)}
+                                        status={item.status}
+                                    />
+                                );
+                            } else {
+                                return (
+                                    <Friendmessage
+                                        key={index}
+                                        message={item.text}
+                                        time={format(item.date)}
+                                    />
+                                );
+                            }
+                        })
+                    ) : (
+                        <div className="noMessageContainer">
+                            <p>Start conversation by asking {starter}</p>
+                        </div>
+                    )}
                 </div>
                 <form className="bottomMessageTyper">
                     <input
