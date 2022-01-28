@@ -176,23 +176,6 @@ const UserListPannel = (props) => {
         friends();
         filterUser();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-    // useEffect(() => {
-    //     const searchUser = async () => {
-    //         try {
-    //             const people = await axios.post(
-    //                 `${baseUrl}/api/searchuser`,
-    //                 searchTerm,
-    //                 {
-    //                     headers: { "auth-token": token },
-    //                 }
-    //             );
-    //             setSearchResult(people.data.user);
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     };
-    //     searchUser();
-    // }, [searchTerm]);
 
     // ================================================================
     const [selectedUser, setSelectedUser] = useState(false);

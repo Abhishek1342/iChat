@@ -4,6 +4,7 @@ const app = express();
 const env = require("dotenv");
 const path = require("path");
 const multer = require("multer");
+const Socket = require("./Socket");
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
@@ -36,7 +37,41 @@ const server = app.listen(PORT, () => {
 
 //################### SOCKET IO #########################
 let user = [];
+
+const newUser = (userId, socketId) => {
+    !user.some((user) => user.userId === userId) &&
+        user.push({ userId, socketId });
+};
+
+const removeUser = (socketId) => {
+    user = user.filter((user) => user.socketId !== socketId);
+};
+
+const getUser = (userId) => {
+    return user.find((user) => user.userId == userId);
+};
+
 const io = require("./Socket").init(server);
-io.on("connection", () => {
+io.on("connection", (socket) => {
     console.log("User connected");
+    socket.on("newUser", (userId) => {
+        newUser(userId, socket.id);
+        io.emit("getUser", user);
+    });
+
+    //send message
+
+    socket.on("sendMessage", ({ senderId, recieverId, text }) => {
+        const reciever = getUser(recieverId);
+        io.to(reciever.socketId).emit("getMessage", {
+            sender: senderId,
+            text,
+        });
+    });
+
+    socket.on("disconnect", () => {
+        removeUser(socket.id);
+        console.log("a user disconnected");
+        io.emit("getUser", user);
+    });
 });

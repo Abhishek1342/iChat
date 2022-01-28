@@ -1,4 +1,4 @@
-const base = "http://localhost:5000";
+export const base = "http://localhost:5000";
 
 const endpoint = {
     login: `${base}/api/login`,

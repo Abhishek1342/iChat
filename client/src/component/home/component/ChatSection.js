@@ -5,8 +5,11 @@ import { format } from "timeago.js";
 import { toast } from "react-toastify";
 import openSocket from "socket.io-client";
 import { startConversation } from "../../../conversation";
+import { base } from "../../../api/EndPoints";
+import { useSelector } from "react-redux";
 
 import { newMessageAPI, getMessageAPI } from "../../../api/MessageApi";
+
 //material ui components ------------------------------
 
 import Button from "@material-ui/core/Button";
@@ -58,10 +61,10 @@ const Friendmessage = (props) => {
     );
 };
 
-// scroll to bottom-------------------------------------
-
 const ChatSection = (props) => {
     const classes = useStyles();
+
+    const state = useSelector((state) => state);
     // material ui states -------------------------------------
 
     const [open, setOpen] = React.useState(false);
@@ -134,6 +137,11 @@ const ChatSection = (props) => {
         };
         try {
             await newMessageAPI(data);
+            socket.current.emit("sendMessage", {
+                senderId: state.currentUser._id,
+                recieverId: props.conversation,
+                text: message,
+            });
         } catch (error) {
             console.log(error);
             toast.error("Unable to send message");
@@ -178,12 +186,30 @@ const ChatSection = (props) => {
     }, [myMessage]);
 
     //################### SOCKET IO ##################
-
-    const [socket, setSocket] = useState(null);
+    const socket = useRef();
+    const [arrivedMessage, setArrivedMessage] = useState([{}]);
     useEffect(() => {
-        setSocket(openSocket("http://localhost:5000/"));
+        socket.current = openSocket(base);
+        socket.current.on("getMessage", (data) => {
+            console.log(data);
+            setArrivedMessage([
+                {
+                    text: data.text,
+                    date: Date.now(),
+                    receiver: state?.currentUser._id,
+                },
+            ]);
+        });
+        setMyMessage([...myMessage, arrivedMessage]);
     }, []);
-    console.log(socket);
+
+    useEffect(() => {
+        socket.current.emit("newUser", state.currentUser._id);
+        socket.current.on("getUser", (users) => {
+            // console.log(users);
+        });
+    }, [state.currentUser._id]);
+    console.log(myMessage);
 
     return (
         <div>
