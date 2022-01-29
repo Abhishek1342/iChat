@@ -36,13 +36,11 @@ const useStyles = makeStyles((theme) => ({
 
 const Mymessage = (props) => {
     return (
-        <div className="myMessageContainer" unselectable="off">
-            <p className="message" unselectable="off">
-                {props.message}
-            </p>
-            <div className=" timeStamp" unselectable="off">
-                <p unselectable="off">{props.status}</p>
-                <p unselectable="off">{props.time}</p>
+        <div className="myMessageContainer">
+            <p className="message">{props.message}</p>
+            <div className=" timeStamp">
+                <p>{props.status}</p>
+                <p>{props.time}</p>
             </div>
         </div>
     );
@@ -50,13 +48,9 @@ const Mymessage = (props) => {
 // message of friend ----------------
 const Friendmessage = (props) => {
     return (
-        <div className="friendMessageContainer" unselectable="off">
-            <p className="message" unselectable="off">
-                {props.message}
-            </p>
-            <p className=" timeStamp" unselectable="off">
-                {props.time}
-            </p>
+        <div className="friendMessageContainer">
+            <p className="message">{props.message}</p>
+            <p className=" timeStamp">{props.time}</p>
         </div>
     );
 };
@@ -138,7 +132,7 @@ const ChatSection = (props) => {
         try {
             await newMessageAPI(data);
             socket.current.emit("sendMessage", {
-                senderId: state.currentUser._id,
+                senderId: state?.currentUser._id,
                 recieverId: props.conversation,
                 text: message,
             });
@@ -187,29 +181,28 @@ const ChatSection = (props) => {
 
     //################### SOCKET IO ##################
     const socket = useRef();
-    const [arrivedMessage, setArrivedMessage] = useState([{}]);
+    const [arrivedMessage, setArrivedMessage] = useState({});
     useEffect(() => {
         socket.current = openSocket(base);
         socket.current.on("getMessage", (data) => {
-            console.log(data);
-            setArrivedMessage([
-                {
-                    text: data.text,
-                    date: Date.now(),
-                    receiver: state?.currentUser._id,
-                },
-            ]);
+            setArrivedMessage({
+                text: data.text,
+                date: Date.now(),
+                receiver: state?.currentUser._id,
+            });
         });
-        setMyMessage([...myMessage, arrivedMessage]);
     }, []);
 
     useEffect(() => {
-        socket.current.emit("newUser", state.currentUser._id);
+        arrivedMessage && setMyMessage((prev) => [...prev, arrivedMessage]);
+    }, [arrivedMessage]);
+
+    useEffect(() => {
+        socket.current.emit("newUser", state?.currentUser._id);
         socket.current.on("getUser", (users) => {
             // console.log(users);
         });
-    }, [state.currentUser._id]);
-    console.log(myMessage);
+    }, [state?.currentUser._id]);
 
     return (
         <div>
