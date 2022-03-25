@@ -24,7 +24,9 @@ const storage = multer.diskStorage({
 
 app.use(multer({ storage: storage }).single("profileImage"));
 
+app.options('*',cors())
 app.use("/api/", require("./Routes/account"));
+app.options('*',cors())
 app.use("/api/", require("./Routes/message"));
 
 app.use((req, res, next) => {
