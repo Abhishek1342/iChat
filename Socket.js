@@ -5,6 +5,7 @@ module.exports = {
         io = require("socket.io")(host, {
             cors: {
                 origin: "https://ichattt.herokuapp.com",
+                // origin: "http://localhost:3000",
                 methods: ["GET", "POST"],
             },
         });

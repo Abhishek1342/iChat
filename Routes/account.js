@@ -45,7 +45,7 @@ router.post(
 // AUTHENTICATION REQUIRED
 
 router.post(
-    "/set-profile",
+    "/setprofile",
     authUser,
     [
         body("name", "Invalid Name")

@@ -8,8 +8,8 @@ const Socket = require("./Socket");
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.options('*',cors())
-app.use("*",cors());
+app.options("*", cors());
+app.use("*", cors());
 
 app.use("/Images", express.static(path.join("Images")));
 env.config({ path: path.resolve(__dirname, "./.env") });
@@ -49,13 +49,15 @@ const removeUser = (socketId) => {
 };
 
 const getUser = (userId) => {
-    return user.find((user) => user.userId == userId);
+    console.log(user);
+    return user.find((user) => user.userId === userId);
 };
 
 const io = require("./Socket").init(server);
 io.on("connection", (socket) => {
     console.log("User connected");
     socket.on("newUser", (userId) => {
+        // console.log(userId);
         newUser(userId, socket.id);
         io.emit("getUser", user);
     });
@@ -64,7 +66,7 @@ io.on("connection", (socket) => {
 
     socket.on("sendMessage", ({ senderId, recieverId, text }) => {
         const reciever = getUser(recieverId);
-        io.to(reciever.socketId).emit("getMessage", {
+        io.to(reciever?.socketId).emit("getMessage", {
             sender: senderId,
             text,
         });

@@ -41,9 +41,12 @@ exports.loginUser = async (req, res) => {
                 },
             };
             const authToken = jwt.sign(payload, process.env.AUTH_TOKEN);
-            return res
-                .status(200)
-                .json({ success, authToken, msg: "Login successfull" });
+            return res.status(200).json({
+                success,
+                isProfileCompleted: user.profileCompleted,
+                authToken,
+                msg: "Login successfull",
+            });
         }
     } catch (err) {
         console.log(err);
@@ -117,6 +120,7 @@ exports.signupUser = async (req, res) => {
 // AUTHENTICATION REQUIRED
 
 exports.setProfile = async (req, res) => {
+    console.log("hit profile");
     let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -446,7 +450,12 @@ exports.allFriends = async (req, res) => {
                 return res.status(500).json({ err: "unable to fetch data" });
             }
         } else {
-            res.status(200).json({ success, msg: "No friends yes" });
+            success = true;
+            res.status(200).json({
+                success,
+                msg: "No friends yet",
+                friendList: [],
+            });
         }
     } catch (error) {
         console.log(error);

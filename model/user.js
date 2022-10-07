@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
     },
     name: {
         type: String,
+        default: "unnamed",
     },
     age: {
         type: Number,
