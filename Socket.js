@@ -4,7 +4,7 @@ module.exports = {
     init: (host) => {
         io = require("socket.io")(host, {
             cors: {
-                origin: "https://ichat-backend.onrender.com",
+                origin: "https://myichat.onrender.com",
                 // origin: "http://localhost:3000",
                 methods: ["GET", "POST"],
             },
